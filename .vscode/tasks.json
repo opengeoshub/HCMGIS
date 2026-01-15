@@ -1,0 +1,86 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Clear Python Cache",
+            "type": "shell",
+            "command": "Get-ChildItem",
+            "args": [
+                "-Path",
+                ".",
+                "-Recurse",
+                "-Directory",
+                "-Name",
+                "__pycache__",
+                "|",
+                "ForEach-Object",
+                "{",
+                "Remove-Item",
+                "-Path",
+                "$_",
+                "-Recurse",
+                "-Force;",
+                "Write-Host",
+                "\"Removed: $_\"",
+                "}"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Remove all __pycache__ directories from the project"
+        },
+        {
+            "label": "Find Python Cache",
+            "type": "shell",
+            "command": "Get-ChildItem",
+            "args": [
+                "-Path",
+                ".",
+                "-Recurse",
+                "-Directory",
+                "-Name",
+                "__pycache__"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "List all __pycache__ directories in the project"
+        },
+        {
+            "label": "Clear Python Cache (Script)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}\\help\\clear_pycache.ps1"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "detail": "Remove all __pycache__ directories using PowerShell script"
+        }
+    ]
+}

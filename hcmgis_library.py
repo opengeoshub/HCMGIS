@@ -2390,11 +2390,12 @@ def hcmgis_geofabrik(region, country, outdir,status_callback = None):
     #print (download_url_pbf)
     headers = ""
     zip = requests.get(download_url_shp, headers=headers, stream=True, allow_redirects=True)
+    # print (download_url_shp)
     total_size = int(zip.headers.get('content-length'))
     total_size_MB = round(total_size*10**(-6),2)
     chunk_size = int(total_size/100)
 
-    if  (zip.status_code == 200):
+    if  (zip.status_code == 200 and total_size_MB > 0.01): # status_code=200 even .zip file does not exist
         print ('total_length MB:', total_size_MB)
         confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
         if confirmed == QMessageBox.Yes:
@@ -2452,7 +2453,7 @@ def hcmgis_geofabrik(region, country, outdir,status_callback = None):
         total_size = int(zip.headers.get('content-length'))
         total_size_MB = round(total_size*10**(-6),2)
         chunk_size = int(total_size/100)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM ppf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
+        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM pbf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
         if confirmed == QMessageBox.Yes:
             i = 0
             f = open(filename_pbf, 'wb')
@@ -2465,31 +2466,53 @@ def hcmgis_geofabrik(region, country, outdir,status_callback = None):
                 i+=1
             f.close()
             #print (unzip_folder_shp)
-            QMessageBox.information(None, "Congrats",u'Download completed! Now wait for a minute to convert pbf to GeoPackage and load into QGIS')
+            QMessageBox.information(None, "Congrats",u'Download completed! Now loading pbf file into QGIS')
             if status_callback:
                 status_callback(0,None)
-            filename_gpkg = filename_pbf[:-4]+'.gpkg'
-            ogr2ogr(["","-f", "GPKG",filename_gpkg, filename_pbf])
+            # Commented out: Convert PBF to GeoPackage
+            # filename_gpkg = filename_pbf[:-4]+'.gpkg'
+            # ogr2ogr(["","-f", "GPKG",filename_gpkg, filename_pbf])
             #from qgis.core import QgsVectorLayer, QgsProject
 
             root = QgsProject.instance().layerTreeRoot()
             shapeGroup = root.addGroup(country)
-            layer = QgsVectorLayer(filename_gpkg,"gpkg","ogr")
-            subLayers =layer.dataProvider().subLayers()
+            # Commented out: Load from GeoPackage
+            # layer = QgsVectorLayer(filename_gpkg,"gpkg","ogr")
+            # subLayers =layer.dataProvider().subLayers()
+            # i = 0
+            # for subLayer in subLayers:
+            #     name = subLayer.split('!!::!!')[1]
+            #     uri = "%s|layername=%s" % (filename_gpkg, name,)
+            #     # Create layer
+            #     if name != 'other_relations':
+            #         sub_vlayer = QgsVectorLayer(uri, name, 'ogr')
+            #         # Add layer to map
+            #         QgsProject.instance().addMapLayer(sub_vlayer,False)
+            #         shapeGroup.insertChildNode(1,QgsLayerTreeLayer(sub_vlayer))
+            #     percen_complete = i/len(subLayers)*100
+            #     if status_callback:
+            #         status_callback(i,None)
+            #     i+=1
+            
+            # Load PBF file directly
+            layer = QgsVectorLayer(filename_pbf, "pbf", "ogr")
+            subLayers = layer.dataProvider().subLayers()
+            if status_callback:
+                status_callback(0,None)
             i = 0
             for subLayer in subLayers:
                 name = subLayer.split('!!::!!')[1]
-                uri = "%s|layername=%s" % (filename_gpkg, name,)
+                uri = "%s|layername=%s" % (filename_pbf, name,)
                 # Create layer
                 if name != 'other_relations':
                     sub_vlayer = QgsVectorLayer(uri, name, 'ogr')
                     # Add layer to map
                     QgsProject.instance().addMapLayer(sub_vlayer,False)
                     shapeGroup.insertChildNode(1,QgsLayerTreeLayer(sub_vlayer))
+                i+=1
                 percen_complete = i/len(subLayers)*100
                 if status_callback:
-                    status_callback(i,None)
-                i+=1
+                    status_callback(percen_complete,None)
             if status_callback:
                 status_callback(100,None)
             QMessageBox.information(None, "Congrats",u'Done. Thank you for your patience!')
@@ -2519,7 +2542,7 @@ def hcmgis_geofabrik2(region, country,state, outdir,status_callback = None):
     total_size = int(zip.headers.get('content-length'))
     total_size_MB = round(total_size*10**(-6),2)
     chunk_size = int(total_size/100)
-    if  (zip.status_code == 200):
+    if  (zip.status_code == 200 and total_size_MB > 0.01): # status_code=200 even .zip file does not exist
         print ('total_length MB:', total_size_MB)
         confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
         if confirmed == QMessageBox.Yes:
@@ -2576,7 +2599,7 @@ def hcmgis_geofabrik2(region, country,state, outdir,status_callback = None):
         total_size = int(zip.headers.get('content-length'))
         total_size_MB = round(total_size*10**(-6),2)
         chunk_size = int(total_size/100)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM ppf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
+        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM pbf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
         if confirmed == QMessageBox.Yes:
             i = 0
             f = open(filename_pbf, 'wb')
@@ -2589,31 +2612,53 @@ def hcmgis_geofabrik2(region, country,state, outdir,status_callback = None):
                 i+=1
             f.close()
             #print (unzip_folder_shp)
-            QMessageBox.information(None, "Congrats",u'Download completed! Now wait for a minute to convert pbf to GeoPackage and load into QGIS')
+            QMessageBox.information(None, "Congrats",u'Download completed! Now loading pbf file into QGIS')
             if status_callback:
                 status_callback(0,None)
-            filename_gpkg = filename_pbf[:-4]+'.gpkg'
-            ogr2ogr(["","-f", "GPKG",filename_gpkg, filename_pbf])
+            # Commented out: Convert PBF to GeoPackage
+            # filename_gpkg = filename_pbf[:-4]+'.gpkg'
+            # ogr2ogr(["","-f", "GPKG",filename_gpkg, filename_pbf])
             #from qgis.core import QgsVectorLayer, QgsProject
 
             root = QgsProject.instance().layerTreeRoot()
             shapeGroup = root.addGroup(country+'_'+state)
-            layer = QgsVectorLayer(filename_gpkg,"gpkg","ogr")
-            subLayers =layer.dataProvider().subLayers()
+            # Commented out: Load from GeoPackage
+            # layer = QgsVectorLayer(filename_gpkg,"gpkg","ogr")
+            # subLayers =layer.dataProvider().subLayers()
+            # i = 0
+            # for subLayer in subLayers:
+            #     name = subLayer.split('!!::!!')[1]
+            #     uri = "%s|layername=%s" % (filename_gpkg, name,)
+            #     # Create layer
+            #     if name != 'other_relations':
+            #         sub_vlayer = QgsVectorLayer(uri, name, 'ogr')
+            #         # Add layer to map
+            #         QgsProject.instance().addMapLayer(sub_vlayer,False)
+            #         shapeGroup.insertChildNode(1,QgsLayerTreeLayer(sub_vlayer))
+            #     percen_complete = i/len(subLayers)*100
+            #     if status_callback:
+            #         status_callback(i,None)
+            #     i+=1
+            
+            # Load PBF file directly
+            layer = QgsVectorLayer(filename_pbf, "pbf", "ogr")
+            subLayers = layer.dataProvider().subLayers()
+            if status_callback:
+                status_callback(0,None)
             i = 0
             for subLayer in subLayers:
                 name = subLayer.split('!!::!!')[1]
-                uri = "%s|layername=%s" % (filename_gpkg, name,)
+                uri = "%s|layername=%s" % (filename_pbf, name,)
                 # Create layer
                 if name != 'other_relations':
                     sub_vlayer = QgsVectorLayer(uri, name, 'ogr')
                     # Add layer to map
                     QgsProject.instance().addMapLayer(sub_vlayer,False)
                     shapeGroup.insertChildNode(1,QgsLayerTreeLayer(sub_vlayer))
+                i+=1
                 percen_complete = i/len(subLayers)*100
                 if status_callback:
-                    status_callback(i,None)
-                i+=1
+                    status_callback(percen_complete,None)
             if status_callback:
                 status_callback(100,None)
             QMessageBox.information(None, "Congrats",u'Done. Thank you for your patience!')
