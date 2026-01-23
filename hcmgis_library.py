@@ -39,9 +39,9 @@ import os.path
 import xml.etree.ElementTree
 
 from qgis.core import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 from qgis.gui import QgsMessageBar
 from math import *
 # Used instead of "import math" so math functions can be used without "math." prefix
@@ -2397,8 +2397,8 @@ def hcmgis_geofabrik(region, country, outdir,status_callback = None):
 
     if  (zip.status_code == 200 and total_size_MB > 0.01): # status_code=200 even .zip file does not exist
         print ('total_length MB:', total_size_MB)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
-        if confirmed == QMessageBox.Yes:
+        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmed == QMessageBox.StandardButton.Yes:
             i = 0
             f = open(zip_filename_shp, 'wb')
             for chunk in zip.iter_content(chunk_size = chunk_size):
@@ -2453,8 +2453,8 @@ def hcmgis_geofabrik(region, country, outdir,status_callback = None):
         total_size = int(zip.headers.get('content-length'))
         total_size_MB = round(total_size*10**(-6),2)
         chunk_size = int(total_size/100)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM pbf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
-        if confirmed == QMessageBox.Yes:
+        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM pbf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmed == QMessageBox.StandardButton.Yes:
             i = 0
             f = open(filename_pbf, 'wb')
             for chunk in zip.iter_content(chunk_size = chunk_size):
@@ -2544,8 +2544,8 @@ def hcmgis_geofabrik2(region, country,state, outdir,status_callback = None):
     chunk_size = int(total_size/100)
     if  (zip.status_code == 200 and total_size_MB > 0.01): # status_code=200 even .zip file does not exist
         print ('total_length MB:', total_size_MB)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
-        if confirmed == QMessageBox.Yes:
+        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmed == QMessageBox.StandardButton.Yes:
             i = 0
             f = open(zip_filename_shp, 'wb')
             for chunk in zip.iter_content(chunk_size = chunk_size):
@@ -2599,8 +2599,8 @@ def hcmgis_geofabrik2(region, country,state, outdir,status_callback = None):
         total_size = int(zip.headers.get('content-length'))
         total_size_MB = round(total_size*10**(-6),2)
         chunk_size = int(total_size/100)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM pbf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
-        if confirmed == QMessageBox.Yes:
+        confirmed = QMessageBox.question(None, "Attention",'Estimated OSM pbf size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmed == QMessageBox.StandardButton.Yes:
             i = 0
             f = open(filename_pbf, 'wb')
             for chunk in zip.iter_content(chunk_size = chunk_size):
@@ -2689,8 +2689,8 @@ def hcmgis_gadm(country, country_short, outdir,status_callback = None):
     chunk_size = int(total_size/100)
     if  (zip.status_code == 200):
         print ('total_length MB:', total_size_MB)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
-        if confirmed == QMessageBox.Yes:
+        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmed == QMessageBox.StandardButton.Yes:
             i = 0
             f = open(zip_filename_shp, 'wb')
             for chunk in zip.iter_content(chunk_size = chunk_size):
@@ -2758,8 +2758,8 @@ def hcmgis_wof(country, country_short, outdir,status_callback = None):
     chunk_size = int(total_size/100)
     if  (zip.status_code == 200):
         print ('total_length MB:', total_size_MB)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
-        if confirmed == QMessageBox.Yes:
+        confirmed = QMessageBox.question(None, "Attention",'Estimated Shapefile size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmed == QMessageBox.StandardButton.Yes:
             i = 0
             f = open(zip_filename_shp, 'wb')
             for chunk in zip.iter_content(chunk_size = chunk_size):
@@ -2858,8 +2858,8 @@ def hcmgis_microsoft(country, state, outdir,status_callback = None):
     chunk_size = int(total_size/100)
     if  (zip.status_code == 200):
         print ('total_length MB:', total_size_MB)
-        confirmed = QMessageBox.question(None, "Attention",'Estimated file size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.Yes | QMessageBox.No)
-        if confirmed == QMessageBox.Yes:
+        confirmed = QMessageBox.question(None, "Attention",'Estimated file size: ' +str(total_size_MB) + ' MB. Downloading may take time. Are you sure?', QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        if confirmed == QMessageBox.StandardButton.Yes:
             i = 0
             f = open(zip_filename, 'wb')
             for chunk in zip.iter_content(chunk_size = chunk_size):

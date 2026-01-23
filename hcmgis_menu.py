@@ -18,8 +18,8 @@
  ***************************************************************************/
  """
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
 from qgis.core import *
 from .hcmgis_dialogs import *
 from .hcmgis_library import *
@@ -717,7 +717,7 @@ class hcmgis_menu ():
     ##########################
     def opendata(self):
         dialog = hcmgis_opendata_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     # def opendevelopmentmekong(self):
     # 	dialog = hcmgis_opendevelopmentmekong_dialog(self.iface)
@@ -725,37 +725,37 @@ class hcmgis_menu ():
 
     def geofabrik(self):
         dialog = hcmgis_geofabrik_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def gadm(self):
         dialog = hcmgis_gadm_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def wof(self):
         dialog = hcmgis_wof_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def microsoft(self):
         dialog = hcmgis_microsoft_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def global_microsoft(self):
         dialog = hcmgis_global_microsoft_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
 
     def projections(self):
         dialog = hcmgis_customprojections_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
 
     def mergefield(self):
         dialog = hcmgis_merge_field_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def splitfield(self):
         dialog = hcmgis_split_field_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     # def splitpolygon(self):
     #     dialog = hcmgis_split_polygon_dialog(self.iface)
@@ -788,19 +788,19 @@ class hcmgis_menu ():
 
     def fontconverter(self):
         dialog = hcmgis_font_convert_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def formatconvert(self):
         dialog = hcmgis_format_convert_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def csv2shp(self):
         dialog = hcmgis_csv2shp_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     def txt2csv(self):
         dialog = hcmgis_txt2csv_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 
     # def xls2csv(self):
     #     dialog = hcmgis_xls2csv_dialog(self.iface)
@@ -808,5 +808,5 @@ class hcmgis_menu ():
 
     def mapbox(self):
         dialog = hcmgis_mapbox_dialog(self.iface)
-        dialog.exec_()
+        dialog.exec()
 

@@ -6,18 +6,23 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Ui_hcmgis_lec_form(object):
     def setupUi(self, hcmgis_lec_form):
         hcmgis_lec_form.setObjectName("hcmgis_lec_form")
-        hcmgis_lec_form.setWindowModality(QtCore.Qt.ApplicationModal)
+        Qt = QtCore.Qt
+        window_modality = getattr(Qt, "WindowModality", Qt)
+        focus_policy = getattr(Qt, "FocusPolicy", Qt)
+        standard_button = getattr(QtWidgets.QDialogButtonBox, "StandardButton", QtWidgets.QDialogButtonBox)
+
+        hcmgis_lec_form.setWindowModality(window_modality.ApplicationModal)
         hcmgis_lec_form.setEnabled(True)
         hcmgis_lec_form.resize(341, 145)
         hcmgis_lec_form.setMouseTracking(False)
         self.BtnOKCancel = QtWidgets.QDialogButtonBox(hcmgis_lec_form)
         self.BtnOKCancel.setGeometry(QtCore.QRect(175, 110, 156, 31))
-        self.BtnOKCancel.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.BtnOKCancel.setStandardButtons(standard_button.Cancel|standard_button.Ok)
         self.BtnOKCancel.setObjectName("BtnOKCancel")
         self.LblInput = QtWidgets.QLabel(hcmgis_lec_form)
         self.LblInput.setGeometry(QtCore.QRect(10, 7, 321, 16))
@@ -32,7 +37,7 @@ class Ui_hcmgis_lec_form(object):
         self.LinOutputFolder.setEnabled(True)
         self.LinOutputFolder.setGeometry(QtCore.QRect(10, 80, 241, 20))
         self.LinOutputFolder.setMouseTracking(True)
-        self.LinOutputFolder.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.LinOutputFolder.setFocusPolicy(focus_policy.StrongFocus)
         self.LinOutputFolder.setAcceptDrops(False)
         self.LinOutputFolder.setText("")
         self.LinOutputFolder.setReadOnly(False)

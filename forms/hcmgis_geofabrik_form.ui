@@ -3,7 +3,7 @@
  <class>hcmgis_geofabrik_form</class>
  <widget class="QDialog" name="hcmgis_geofabrik_form">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::WindowModality::ApplicationModal</enum>
   </property>
   <property name="enabled">
    <bool>true</bool>
@@ -32,7 +32,6 @@
       <widget class="QLabel" name="label">
        <property name="font">
         <font>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -115,7 +114,7 @@
    <item>
     <widget class="QDialogButtonBox" name="BtnApplyClose">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Apply|QDialogButtonBox::Close</set>
+      <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Close</set>
      </property>
     </widget>
    </item>

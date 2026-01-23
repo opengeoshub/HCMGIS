@@ -25,10 +25,10 @@ from urllib.request import urlopen
 import json
 
 from qgis.core import *
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import *
+from PyQt6.QtGui import *
+from PyQt6.QtWidgets import *
 from owslib.wfs import WebFeatureService
 #from owslib.ogcapi import Features
 from qgis.gui import QgsMessageBar
@@ -38,7 +38,53 @@ import urllib, re, ssl
 from time import sleep
 from xml.etree.ElementTree import XML, fromstring
 import webbrowser
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
+
+def _hcmgis_ensure_qt_enum_compat():
+    qt = QtCore.Qt
+    if not hasattr(qt, "WindowModality"):
+        qt.WindowModality = qt
+    if not hasattr(qt, "Orientation"):
+        qt.Orientation = qt
+    if not hasattr(qt, "LayoutDirection"):
+        qt.LayoutDirection = qt
+    if not hasattr(qt, "AlignmentFlag"):
+        qt.AlignmentFlag = qt
+    if not hasattr(qt, "FocusPolicy"):
+        qt.FocusPolicy = qt
+
+    if not hasattr(qt, "NonModal"):
+        try:
+            qt.NonModal = qt.WindowModality.NonModal
+        except Exception:
+            qt.NonModal = 0
+    if not hasattr(qt, "WindowModal"):
+        try:
+            qt.WindowModal = qt.WindowModality.WindowModal
+        except Exception:
+            qt.WindowModal = 1
+    if not hasattr(qt, "ApplicationModal"):
+        try:
+            qt.ApplicationModal = qt.WindowModality.ApplicationModal
+        except Exception:
+            qt.ApplicationModal = 2
+
+    if not hasattr(QtWidgets.QDialogButtonBox, "StandardButton"):
+        QtWidgets.QDialogButtonBox.StandardButton = QtWidgets.QDialogButtonBox
+    if not hasattr(QtWidgets.QAbstractItemView, "EditTrigger"):
+        QtWidgets.QAbstractItemView.EditTrigger = QtWidgets.QAbstractItemView
+    if not hasattr(QtWidgets.QAbstractItemView, "DragDropMode"):
+        QtWidgets.QAbstractItemView.DragDropMode = QtWidgets.QAbstractItemView
+    if not hasattr(QtWidgets.QAbstractItemView, "SelectionMode"):
+        QtWidgets.QAbstractItemView.SelectionMode = QtWidgets.QAbstractItemView
+    if not hasattr(QtWidgets.QAbstractItemView, "SelectionBehavior"):
+        QtWidgets.QAbstractItemView.SelectionBehavior = QtWidgets.QAbstractItemView
+    if not hasattr(QtWidgets.QFrame, "Shadow"):
+        QtWidgets.QFrame.Shadow = QtWidgets.QFrame
+    if not hasattr(QtWidgets.QSizePolicy, "Policy"):
+        QtWidgets.QSizePolicy.Policy = QtWidgets.QSizePolicy
+
+_hcmgis_ensure_qt_enum_compat()
 
 
 try:
@@ -373,14 +419,14 @@ class hcmgis_dialog(QtWidgets.QDialog):
                     MessageBar.pushMessage(message, 0, 2)
                     self.LblWFSLayers.setText(message)
                     self.Filter.setEnabled(True)
-                    self.Filter.setFocus(True)
+                    self.Filter.setFocus()
                 else:
                     message = " 0 layer loaded"
                     self.LblWFSLayers.setText(message)
                     MessageBar = qgis.utils.iface.messageBar()
                     MessageBar.pushMessage(message, 0, 2)
                     self.Filter.setEnabled(False)
-                    self.Filter.setFocus(False)
+                    self.Filter.clearFocus()
 
             else: return
         except Exception as e:
@@ -488,14 +534,14 @@ class hcmgis_dialog(QtWidgets.QDialog):
                     MessageBar = qgis.utils.iface.messageBar()
                     MessageBar.pushMessage(message, 0, 2)
                     self.Filter.setEnabled(True)
-                    self.Filter.setFocus(True)
+                    self.Filter.setFocus()
                 else:
                     message = " 0 WFS layer loaded"
                     self.LblWFSLayers.setText(message)
                     MessageBar = qgis.utils.iface.messageBar()
                     MessageBar.pushMessage(message, 0, 2)
                     self.Filter.setEnabled(False)
-                    self.Filter.setFocus(False)
+                    self.Filter.clearFocus()
             else: return
         except Exception as e:
             QMessageBox.warning(None, "WFS Error",str(e))
@@ -574,14 +620,14 @@ class hcmgis_dialog(QtWidgets.QDialog):
                     MessageBar = qgis.utils.iface.messageBar()
                     MessageBar.pushMessage(message, 0, 2)
                     self.Filter.setEnabled(True)
-                    self.Filter.setFocus(True)
+                    self.Filter.setFocus()
                 else:
                     message = " 0 WFS layer loaded"
                     self.LblWFSLayers.setText(message)
                     MessageBar = qgis.utils.iface.messageBar()
                     MessageBar.pushMessage(message, 0, 2)
                     self.Filter.setEnabled(False)
-                    self.Filter.setFocus(False)
+                    self.Filter.clearFocus()
             else: return
         except Exception as e:
             QMessageBox.warning(None, "WFS Error",str(e))
@@ -630,8 +676,8 @@ class hcmgis_opendata_dialog(hcmgis_dialog, Ui_hcmgis_opendata_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
-        self.Filter.setFocus(True)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
+        self.Filter.setFocus()
         QWidget.setTabOrder(self.Filter, self.TblWFSLayers)
         self.BtnOutputFolder.clicked.connect(self.browse_outfile)
 
@@ -670,11 +716,11 @@ class hcmgis_opendata_dialog(hcmgis_dialog, Ui_hcmgis_opendata_form):
 
         self.cboServerName.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboServerName.setMaxVisibleItems(10)
-        self.cboServerName.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboServerName.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
         self.TblWFSLayers.doubleClicked.connect(self.run)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
-        # self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).clicked.connect(self.closeDialog)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
+        # self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).clicked.connect(self.closeDialog)
 
     # def closeDialog(self):
     #     QApplication.setOverrideCursor(Qt.ArrowCursor)
@@ -1102,17 +1148,17 @@ class hcmgis_geofabrik_dialog(hcmgis_dialog, Ui_hcmgis_geofabrik_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)    
         self.BtnOutputFolder.clicked.connect(self.browse_outfile)
 
         self.cboRegion.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboCountry.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboCountry.setMaxVisibleItems(10)
-        self.cboCountry.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboCountry.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
         self.cboProvince.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboProvince.setMaxVisibleItems(10)
-        self.cboProvince.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboProvince.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
 
         project = QgsProject.instance()
@@ -1412,7 +1458,7 @@ class hcmgis_gadm_dialog(hcmgis_dialog, Ui_hcmgis_gadm_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)   
         self.BtnOutputFolder.clicked.connect(self.browse_outfile)
         project = QgsProject.instance()
         home_path = project.homePath()
@@ -1427,7 +1473,7 @@ class hcmgis_gadm_dialog(hcmgis_dialog, Ui_hcmgis_gadm_form):
 
         self.cboCountry.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboCountry.setMaxVisibleItems(10)
-        self.cboCountry.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboCountry.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
     country = ['Afghanistan','Akrotiri and Dhekelia','Åland','Albania','Algeria','American Samoa','Andorra','Angola','Anguilla','Antarctica',\
             'Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh',\
@@ -1509,7 +1555,7 @@ class hcmgis_wof_dialog(hcmgis_dialog, Ui_hcmgis_wof_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.BtnOutputFolder.clicked.connect(self.browse_outfile)
         project = QgsProject.instance()
         home_path = project.homePath()
@@ -1522,7 +1568,7 @@ class hcmgis_wof_dialog(hcmgis_dialog, Ui_hcmgis_wof_form):
 
         self.cboCountry.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboCountry.setMaxVisibleItems(10)
-        self.cboCountry.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboCountry.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
     country_short=['AD','AE','AF','AG','AI','AL','AM','AO','AQ','AR','AS','AT','AU','AW','AX','AZ','BA','BB','BD','BE','BF','BG','BH','BI','BJ','BL','BM','BN','BO','BQ','BR','BS','BT','BW','BY','BZ','CA','CC','CD','CF','CG','CH','CI','CK','CL','CM','CN','CO','CR','CU','CV','CW','CX','CY','CZ','DE','DJ','DK','DM','DO','DZ','EC','EE','EG','EH','ER','ES','ET','FI','FJ','FK','FM','FO','FR','GA','GB','GD','GE','GF','GG','GH','GI','GL','GM','GN','GP','GQ','GR','GS','GT','GU','GW','GY','HK','HN','HR','HT','HU','ID','IE','IL','IM','IN','IO','IQ','IR','IS','IT','JE','JM','JO','JP','KE','KG','KH','KI','KM','KN','KP','KR','KW','KY','KZ','LA','LB','LC','LI','LK','LR','LS','LT','LU','LV','LY','MA','MC','MD','ME','MF','MG','MH','MK','ML','MM','MN','MO','MP','MQ','MR','MS','MT','MU','MV','MW','MX','MY','MZ','NA','NC','NE','NF','NG','NI','NL','NO','NP','NR','NU','NZ','OM','PA','PE','PF','PG','PH','PK','PL','PM','PN','PR','PS','PT','PW','PY','QA','RE','RO','RS','RU','RW','SA','SB','SC','SD','SE','SG','SH','SI','SJ','SK','SL','SM','SN','SO','SR','SS','ST','SV','SX','SY','SZ','TC','TD','TF','TG','TH','TJ','TK','TL','TM','TN','TO','TR','TT','TV','TW','TZ','UA','UG','UM','UN','US','UY','UZ','VA','VC','VE','VG','VI','VN','VU','WF','WS','XK','XS','XX','XY','XZ','YE','YT','ZA','ZM','ZW']
     country=["Andorra","United Arab Emirates (الإمارات العربيّة المتّحدة)","Afghanistan (افغانستان)","Antigua and Barbuda","Anguilla","Albania (Shqipëria)","Armenia (Hayastán / Հայաստան)","Angola (Ngola)","Antarctica","Argentina","American Samoa (Amerika Sāmoa)","Austria (Österreich)","Australia","Aruba","Åland Islands (Åland / Ahvenanmaa)","Azerbaijan (Azərbaycan)","Bosnia and Herzegovina (Босна и Херцеговина)","Barbados","Bangladesh (বাংলাদেশ)","Belgium (België / Belgique / Belgien)","Burkina Faso","Bulgaria (Bălgariya / България)","Bahrain (البحرين)","Burundi (Uburundi)","Benin (Bénin)","Saint Barthélemy (Saint-Barthélemy)","Bermuda","Brunei (بروني)","Bolivia (Buliwya / Wuliwya / Volívia)","Bonaire, Sint Eustatius, Saba","Brazil (Brasil)","Bahamas (The Bahamas)","Bhutan (Druk Yul / འབྲུག་ཡུལ)","Botswana","Belarus (Bielaruś / Беларусь)","Belize","Canada","Cocos (Keeling) Islands","Congo (DRC) (République démocratique du Congo)","Central African Republic (Centrafrique / Bêafrîka)","Congo (République du Congo / Repubilika ya Kôngo)","Switzerland (Schweiz / Suisse / Svizzera / Svizra)","Côte d'Ivoire (Ivory Coast)","Cook Islands (Kūki 'Āirani)","Chile","Cameroon (Cameroun)","China (中国)","Colombia","Costa Rica","Cuba","Cabo Verde (Cape Verde)","Curaçao (Kòrsou)","Christmas Island","Cyprus (Κύπρος / Kıbrıs)","Czechia (Česká republika / Česko)","Germany (Deutschland)","Djibouti (جيبوتي)","Denmark (Danmark)","Dominica","Dominican Republic (República Dominicana)","Algeria (ⴷⵣⴰⵢⴻⵔ / الجزائر)","Ecuador","Estonia (Eesti)","Egypt (مصر)","Western Sahara (الجمهورية العربية الصحراوية الديمقراطية)","Eritrea ( إرتريا / ኤርትራ)","Spain (España / Espanya / Espainia)","Ethiopia (ኢትዮጵያ)","Finland (Suomi)","Fiji (Viti / फ़िजी)","Falkland Islands / Malvinas","Micronesia","Faroe Islands (Føroyar / Færøerne)","France","Gabon (République gabonaise)","United Kingdom","Grenada","Georgia (საქართველო)","French Guiana (Guyane)","Guernsey","Ghana (Gaana / Gana)","Gibraltar","Greenland (Kalaallit Nunaat / Grønland)","Gambia (the) (The Gambia)","Guinea (Guinée / Gine)","Guadeloupe","Equatorial Guinea (Guinea Ecuatorial / Guinée équatoriale / Guiné Equatorial)","Greece (Ελλάδα)","South Georgia and the South Sandwich Islands","Guatemala","Guam (Guåhån)","Guinea-Bissau (Guiné-Bissau)","Guyana","Hong Kong (香港)","Honduras","Croatia (Hrvatska)","Haiti (Haïti / Ayiti)","Hungary (Magyarország)","Indonesia","Ireland (Éire)","Israel (ישראל / إسرائيل)","Isle of Man (Ellan Vannin)","India (ભારત / भारत / ಭಾರತ)","British Indian Ocean Territory","Iraq (العراق / عێراق)","Iran (ایران)","Iceland (Ísland)","Italy (Italia)","Jersey (Jèrri)","Jamaica","Jordan (الأردن)","Japan (日本)","Kenya","Kyrgyzstan (Кыргызстан)","Cambodia (កម្ពុជា)","Kiribati","Comoros ( Komori / Comores / جزر القمر)","Saint Kitts and Nevis","Korea (DPR) (조선 / 북조선 / 朝鮮)","Korea (ROK) (한국 / 남한 / 韓國)","Kuwait (دولة الكويت / الكويت)","Cayman Islands","Kazakhstan (Қазақстан)","Laos (ປະເທດລາວ)","Lebanon (لبنان)","Saint Lucia","Liechtenstein","Sri Lanka (ශ්‍රී ලංකාව / இலங்கை)","Liberia","Lesotho","Lithuania (Lietuva)","Luxembourg (Lëtzebuerg / Luxemburg)","Latvia (Latvija)","Libya (ⵍⵉⴱⵢⴰ / ليبيا)","Morocco (ⴰⵎⵔⵔⵓⴽ / ⵍⵎⵖⵔⵉⴱ / المغرب)","Monaco (Múnegu)","Moldova","Montenegro (Црна Гора)","Saint Martin (French part) (Saint-Martin)","Madagascar (Madagasikara)","Marshall Islands (Aorōkin Ṃajeḷ)","North Macedonia (Северна Македонија / Maqedonia e Veriut)","Mali","Myanmar (မြန်မာ)","Mongolia (Монгол Улс / ᠮᠤᠩᠭᠤᠯ / ᠤᠯᠤᠰ)","Macao (澳門)","Northern Mariana Islands (Notte Mariånas)","Martinique","Mauritania (ⵎⵓⵔⵉⵜⴰⵏ / ⴰⴳⴰⵡⵛ / موريتانيا)","Montserrat","Malta","Mauritius (Maurice / Moris)","Maldives (ދިވެހިރާއްޖެ)","Malawi (Malaŵi)","Mexico (México / Mēxihco)","Malaysia","Mozambique (Moçambique)","Namibia (Namibië)","New Caledonia (Nouvelle-Calédonie)","Niger","Norfolk Island (Norf'k Ailen)","Nigeria (Nijeriya / Naìjíríyà / Nàìjíríà)","Nicaragua","Netherlands (Nederland / Nederlân)","Norway (Norge / Noreg / Norga / Vuodna / Nöörje)","Nepal (नेपाल)","Nauru (Naoero)","Niue (Niuē)","New Zealand (Aotearoa)","Oman (عُمان)","Panama (Panamá)","Peru (Perú / Piruw)","French Polynesia (Polynésie française)","Papua New Guinea (Papua New Guinea / Papua Niugini / Papua Niu Gini)","Philippines (Pilipinas)","Pakistan (پاکستان)","Poland (Polska)","Saint Pierre and Miquelon (Saint-Pierre et Miquelon)","Pitcairn (Pitkern Ailen)","Puerto Rico","Palestine (فلسطين)","Portugal","Palau (Belau)","Paraguay (Paraguái)","Qatar (قطر)","Réunion (La Réunion)","Romania (România)","Serbia (Србија)","Russia (Россия)","Rwanda","Saudi Arabia (المملكة العربية السعودية)","Solomon Islands (Solomon Aelan)","Seychelles (Sesel)","Sudan (the) (السودان)","Sweden (Sverige)","Singapore (Singapura / 新加坡 / சிங்கப்பூர்)","Saint Helena, Ascension Island, Tristan da Cunha","Slovenia (Slovenija)","Svalbard and Jan Mayen","Slovakia (Slovensko)","Sierra Leone","San Marino","Senegal (Sénégal / Senegaal)","Somalia (Soomaaliya / الصومال)","Suriname","South Sudan (Sudan Kusini / Paguot Thudän)","Sao Tome and Principe (São Tomé e Príncipe)","El Salvador","Sint Maarten (Dutch part)","Syria (سورية)","Eswatini (eSwatini)","Turks and Caicos Islands","Chad (Tchad / تشاد)","French Southern Territories (Terres australes françaises)","Togo","Thailand (ไทย, ประเทศไทย, ราชอาณาจักรไทย)","Tajikistan (Тоҷикистон)","Tokelau","Timor-Leste (Timor Lorosa'e)","Turkmenistan (Türkmenistan)","Tunisia (ⵜⵓⵏⵙ / تونس)","Tonga","Türkiye (Türkiye)","Trinidad and Tobago","Tuvalu","Taiwan (中華民國 / 臺灣/台灣)","Tanzania","Ukraine (Україна)","Uganda","U.S. Minor Outlying Islands","United Nations (Les Nations Unies)","United States of America (Estados Unidos / ‘Amelika Hui Pū ‘ia)","Uruguay","Uzbekistan (Ўзбекистон)","Holy See (Civitas Vaticana / Città del Vaticano)","Saint Vincent and the Grenadines","Venezuela","Virgin Islands (British)","Virgin Islands (U.S.)","Viet Nam (Việt Nam)","Vanuatu","Wallis and Futuna (Wallis-et-Futuna / ʻUvea mo Futuna)","Samoa (Sāmoa)","Kosovo (Kosova / Косово)","Somaliland (Soomaaliland / جمهورية صوماليلاند )","Disputed territories (Territoires contestés)","Undetermined country (Pays indéterminé)","Multiple ISO country parents (Parents de plusieurs pays ISO)","Yemen (اليمن)","Mayotte (Maore)","South Africa (Suid-Afrika / iNingizimu Afrika / uMzantsi Afrika / Afrika-Borwa)","Zambia","Zimbabwe"]
@@ -1547,7 +1593,7 @@ class hcmgis_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_microsoft_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)         
         self.BtnOutputFolder.clicked.connect(self.browse_outfile)
 
         project = QgsProject.instance()
@@ -1566,7 +1612,7 @@ class hcmgis_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_microsoft_form):
 
         self.cboProvince.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboProvince.setMaxVisibleItems(10)
-        self.cboProvince.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboProvince.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
     import locale
     try:
         locale.setlocale(locale.LC_ALL, 'en_US')
@@ -1634,7 +1680,7 @@ class hcmgis_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_microsoft_form):
         self.cboProvince.clear()
         self.LblHyperlink.clear()
         self.cboProvince.setEnabled(True)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).setEnabled(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).setEnabled(False)
         if 	(self.cboCountry.currentText() == 'United States of America'):
             self.cboProvince.addItems(self.us_states)
         elif (self.cboCountry.currentText() == 'Canada'):
@@ -1691,21 +1737,21 @@ class hcmgis_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_microsoft_form):
         self.LblHyperlink.clear()
         province_index = self.cboProvince.currentIndex()
         if (province_index >=0):
-            self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).setEnabled(True)
+            self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).setEnabled(True)
             if (self.cboCountry.currentText() == 'United States of America'):
                 self.LinBuidings.setText(locale.format_string("%d", self.us_buildings[province_index], grouping=True))
                 self.LinSize.setText(locale.format_string("%.2f", self.us_size[province_index], grouping=True))
                 if (self.us_size[province_index]>=500):
                     link_message = 'File size is too big. Please download directly at '+ '<a href='+ 'https://usbuildingdata.blob.core.windows.net/usbuildings-v1-1/'+str(self.us_states_code[province_index])+'.zip>'+str (self.cboProvince.currentText()) +' Building Footprints</a>' +' instead!'
                     self.LblHyperlink.setText(link_message)
-                    self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).setEnabled(False)
+                    self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).setEnabled(False)
             elif (self.cboCountry.currentText() == 'Canada'):
                 self.LinBuidings.setText(locale.format_string("%d", self.canada_buildings[province_index], grouping=True))
                 self.LinSize.setText(locale.format_string("%.2f", self.canada_size[province_index], grouping=True))
                 if (self.canada_size[province_index]>=500):
                     link_message = 'File size is too big. Please download directly at '+ '<a href='+ 'https://usbuildingdata.blob.core.windows.net/canadian-buildings-v2/'+str(self.canada_states_code[province_index])+'.zip>'+str (self.cboProvince.currentText()) +' Building Footprints</a>' +' instead!'
                     self.LblHyperlink.setText(link_message)
-                    self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).setEnabled(False)
+                    self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).setEnabled(False)
 
             elif (self.cboCountry.currentText() == 'South America'):
                 self.LinBuidings.setText(locale.format_string("%d", self.south_america_buildings[province_index], grouping=True))
@@ -1716,9 +1762,9 @@ class hcmgis_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_microsoft_form):
                     else:
                         link_message = 'File size is too big. Please download directly at '+ '<a href='+ 'https://minedbuildings.blob.core.windows.net/southamerica/SouthAmericaPolygons.zip>'+' South America Building Footprints</a>' +' instead!'
                     self.LblHyperlink.setText(link_message)
-                    self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).setEnabled(False)
+                    self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).setEnabled(False)
 
-        else:   self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).setEnabled(False)
+        else:   self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).setEnabled(False)
 
     def run(self):
         outdir = unicode(self.LinOutputFolder.displayText())
@@ -1740,9 +1786,8 @@ class hcmgis_global_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_global_microsoft_f
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
-        self.Filter.setFocus(True)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         QWidget.setTabOrder(self.Filter, self.TblCountries)
 
         self.readcsv()
@@ -1861,7 +1906,7 @@ class hcmgis_global_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_global_microsoft_f
 # 		self.cboFormat.currentIndexChanged.connect(self.update_proj)
 # 		self.cboParameters.currentIndexChanged.connect(self.update_proj)
 # 		self.cboKTT.currentTextChanged.connect(self.update_proj)
-# 		self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+# 		self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
 
 # 	def update_proj(self):
 # 		self.txtProjections.clear()
@@ -2246,15 +2291,15 @@ class hcmgis_customprojections_dialog(hcmgis_dialog, Ui_hcmgis_customprojections
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.cboProvinces.addItems(self.provinces)
         self.cboProvinces.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboProvinces.setMaxVisibleItems(21)
-        self.cboProvinces.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboProvinces.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
         self.cboEPSG.setStyleSheet("QComboBox {combobox-popup: 0; }") # To enable the setMaxVisibleItems
         self.cboEPSG.setMaxVisibleItems(21)
-        self.cboEPSG.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cboEPSG.view().setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
 
 
 
@@ -2329,9 +2374,9 @@ class hcmgis_split_polygon_dialog(hcmgis_dialog, Ui_hcmgis_spit_polygon_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.PolygonLayer)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
         self.hcmgis_initialize_spatial_output_file_widget(self.output_file_name,'splitted')
 
@@ -2435,11 +2480,11 @@ class hcmgis_medialaxis_dialog(hcmgis_dialog, Ui_hcmgis_medialaxis_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.PolygonLayer)
         self.CboField.setLayer (self.CboInput.currentLayer())
         self.CboInput.activated.connect(self.update_field)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
         self.hcmgis_initialize_spatial_output_file_widget(self.output_file_name,'skeleton')
 
@@ -2474,9 +2519,9 @@ class hcmgis_centerline_dialog(hcmgis_dialog, Ui_hcmgis_centerline_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.PolygonLayer)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.chksurround.checked = False
         self.lblsurround.setEnabled(False)
         self.distance.setEnabled(False)
@@ -2518,11 +2563,11 @@ class hcmgis_closestpair_dialog(hcmgis_dialog, Ui_hcmgis_closestpair_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.PointLayer)
         self.CboField.setLayer (self.CboInput.currentLayer () )
         self.CboInput.activated.connect(self.update_field)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
         self.hcmgis_initialize_spatial_output_file_widget(self.closest,'closest')
         self.hcmgis_initialize_spatial_output_file_widget(self.farthest,'farthest')
@@ -2553,11 +2598,11 @@ class hcmgis_lec_dialog(hcmgis_dialog, Ui_hcmgis_lec_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.PointLayer)
         self.CboField.setLayer (self.CboInput.currentLayer () )
         self.CboInput.activated.connect(self.update_field)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
         self.hcmgis_initialize_spatial_output_file_widget(self.output_file_name,'lec')
 
@@ -2583,9 +2628,9 @@ class hcmgis_font_convert_dialog(hcmgis_dialog, Ui_hcmgis_font_convert_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.VectorLayer)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
         self.hcmgis_initialize_spatial_output_file_widget(self.output_file_name,'fontconvert')
 
@@ -2608,11 +2653,11 @@ class hcmgis_split_field_dialog(hcmgis_dialog, Ui_hcmgis_split_field_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.VectorLayer)
         self.CboField.setLayer (self.CboInput.currentLayer () )
         self.CboInput.activated.connect(self.update_field)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
 
     def update_field(self):
@@ -2637,10 +2682,10 @@ class hcmgis_merge_field_dialog(hcmgis_dialog, Ui_hcmgis_merge_field_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.CboInput.setFilters(QgsMapLayerProxyModel.VectorLayer)
         self.update_fields()
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.CboInput.activated.connect(self.update_fields)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
 
@@ -2669,12 +2714,12 @@ class hcmgis_format_convert_dialog(hcmgis_dialog, Ui_hcmgis_format_convert_form)
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)        
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
         self.lsFiles.clear()
         self.txtError.clear()
         self.BtnInputFolder.clicked.connect(self.read_files)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.cboInputFormat.currentIndexChanged.connect(self.update_files)
         self.cboOutputFormat.clear()
         self.cboOutputFormat.addItems(self.out_put_format)
@@ -2778,13 +2823,13 @@ class hcmgis_csv2shp_dialog(hcmgis_dialog, Ui_hcmgis_csv2shp_form):
     def __init__(self, iface):
         hcmgis_dialog.__init__(self, iface)
         self.setupUi(self)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Close).setAutoDefault(False)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Close).setAutoDefault(False)
         self.hcmgis_set_status_bar(self.status,self.LblStatus)
         self.lsCSV.clear()
         self.txtError.clear()
         self.BtnInputFolder.clicked.connect(self.read_csv)
         self.lsCSV.currentRowChanged.connect(self.set_field_names)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
 
     def set_field_names(self):
         try:
@@ -2905,7 +2950,7 @@ class hcmgis_txt2csv_dialog(hcmgis_dialog, Ui_hcmgis_txt2csv_form):
         self.lsTXT.clear()
         self.txtError.clear()
         self.BtnInputFolder.clicked.connect(self.read_txt)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
 
     def read_txt(self):
         newname = QFileDialog.getExistingDirectory(None, "Input Folder",self.LinInputFolder.displayText())
@@ -2969,7 +3014,7 @@ class hcmgis_xls2csv_dialog(hcmgis_dialog, Ui_hcmgis_xls2csv_form):
         self.lsXLS.clear()
         self.txtError.clear()
         self.BtnInputFolder.clicked.connect(self.read_xls)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
 
     def read_xls(self):
         newname = QFileDialog.getExistingDirectory(None, "Input Folder",self.LinInputFolder.displayText())
@@ -3031,7 +3076,7 @@ class hcmgis_mapbox_dialog(hcmgis_dialog, Ui_hcmgis_mapbox_form):
         self.CboMapboxStyle.currentIndexChanged.connect(self.MapboxStyleChange)
         self.LblView.openExternalLinks()
         self.CboMapboxStyle.setCurrentIndex(-1)
-        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.Apply).clicked.connect(self.run)
+        self.BtnApplyClose.button(QtWidgets.QDialogButtonBox.StandardButton.Apply).clicked.connect(self.run)
         self.LinAccessToken.setText('pk.eyJ1IjoidGhhbmdxZCIsImEiOiJucHFlNFVvIn0.j5yb-N8ZR3d4SJAYZz-TZA')
         self.TxtStyleWMTS.clear()
 

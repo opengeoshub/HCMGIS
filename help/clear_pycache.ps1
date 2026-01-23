@@ -43,3 +43,4 @@ if ($remainingDirs.Count -eq 0) {
         Write-Host "  - $dir" -ForegroundColor Gray
     }
 }
+
