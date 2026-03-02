@@ -90,6 +90,7 @@ vectortiles_basemap_names=[
                 'ESRI Nova',
                 'ESRI Night',
                 'ESRI Topo',
+                'ESRI Charted Territory',
                 'ESRI OSM Standard',
                 'ESRI OSM Street',
                 'ESRI OSM Light Grey',
@@ -114,31 +115,33 @@ vectortiles_basemap_names=[
 
 vectortiles_style_urls = [
                 # ESRI         
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/esri_coloredpencil.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/esri_dark.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/esri_modern_antique.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/esri_nova.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/esri_night.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/esri_topography.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/esri_coloredpencil.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/esri_dark.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/esri_modern_antique.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/esri_nova.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/esri_night.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/esri_topography.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/esri_charted_territory.json',
+    
 
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/osm_standard.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/osm_street.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/osm_lightgrey_base.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/osm_darkgrey_base.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/esri/osm_blueprint.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/osm_standard.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/osm_street.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/osm_lightgrey_base.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/osm_darkgrey_base.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/esri/osm_blueprint.json',
                 ############################################ 
                # Carto  
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/openmaptiles/basic.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/openmaptiles/dark.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/openmaptiles/fiord.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/openmaptiles/osmliberty.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/openmaptiles/positron.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/openmaptiles/toner.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/openmaptiles/basic.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/openmaptiles/dark.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/openmaptiles/fiord.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/openmaptiles/osmliberty.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/openmaptiles/positron.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/openmaptiles/toner.json',
                 ############################################
                  # Versatiles         
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/versatiles/colorful.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/versatiles/eclipse.json',
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/versatiles/neutrino.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/versatiles/colorful.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/versatiles/eclipse.json',
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/versatiles/neutrino.json',
                 ############################################ 
 
                 # Apache URL              
@@ -147,15 +150,16 @@ vectortiles_style_urls = [
                 
                 ############################################
                 # Vgrid  
-                'https://raw.githubusercontent.com/thangqd/vstyles/main/vstyles/vn_islands/vn_islands.json'
+                'https://raw.githubusercontent.com/opengeoshub/vstyles/main/vstyles/vn_islands/vn_islands.json'
             ]
             
 
 basemap_names = ['Google Maps', 'Google Satellite',\
                 'Google Satellite Hybrid','Google Terrain Hybrid', \
                 'Bing Virtual Earth',\
-                'Carto Antique','Carto Dark',\
-                'Carto Eco','Carto Light',\
+                'Carto Light',
+                'Carto Dark',
+                'Carto Voyager',
                 'Esri Boundaries and Places','Esri Dark Gray',\
                 'ESri DeLorme','Esri Imagery',\
                 'Esri Light Gray','Esri National Geographic',\
@@ -168,15 +172,19 @@ basemap_names = ['Google Maps', 'Google Satellite',\
                 'Stamen Terrain Background','Stamen Watercolor',\
                 'NASA Black Marble',\
                 'Wikimedia Maps',\
-                'Vietbando Maps','BecaGIS Maps', 
+                'Vietbando Maps',
+                # 'BecaGIS Maps', 
                 'HCMC OneMap',
                 'Vgrid'              
              ]
 basemap_urls = ["https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}","https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",\
                 "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}","https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}",\
                 'https://ecn.t3.tiles.virtualearth.net/tiles/a{q}.jpeg?g=1',\
-                'https://cartocdn_a.global.ssl.fastly.net/base-antique/{z}/{x}/{y}.png','https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',\
-                'https://cartocdn_a.global.ssl.fastly.net/base-eco/{z}/{x}/{y}.png', 'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.pn',\
+                
+                'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',\
+                'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',\
+                'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png',\
+                
                 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}','https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',\
                 'https://server.arcgisonline.com/arcgis/rest/services/Specialty/DeLorme_World_Base_Map/MapServer/tile/{z}/{y}/{x}', 'https://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',\
                 'https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}','https://server.arcgisonline.com/arcgis/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',\
@@ -190,7 +198,7 @@ basemap_urls = ["https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}","https://mt
                 'http://realearth.ssec.wisc.edu/tiles/VIIRS-MASK-54000x27000/{z}/{x}/{y}.png',\
                 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png',\
                 'http://images.vietbando.com/ImageLoader/GetImage.ashx?Ver%3D2016%26LayerIds%3DVBD%26Y%3D%7By%7D%26X%3D%7Bx%7D%26Level%3D%7Bz%7D',\
-                'https://maps.becagis.vn/tiles/basemap/light/{z}/{x}/{y}.png',
+                # 'https://maps.becagis.vn/tiles/basemap/light/{z}/{x}/{y}.png',
                 'https://bando.tphcm.gov.vn/service/gisp/tile/raster/{z}/{x}/{y}',
                 'https://vgridserve.sovereignsolutions.app/vgrid/{z}/{x}/{y}.png',
                 #'https://becamaps.vntts.vn/geoserver/gwc/service/wmts?layer=osm:osm_vietnam&style=&tilematrixset=EPSG:900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image/png&TileMatrix=EPSG:900913:{z}&TileCol={x}&TileRow={y}'

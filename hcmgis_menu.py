@@ -108,6 +108,12 @@ class hcmgis_menu ():
         self.esritopo_action.triggered.connect(lambda: hcmgis_vectortiles_basemap('ESRI Topo'))
         self.vectortiles_menu.addAction(self.esritopo_action)
 
+        #ESRI Charted Territory
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")  
+        self.esrichartedterritory_action = QAction(icon, u'ESRI Charted Territory', self.iface.mainWindow())
+        self.esrichartedterritory_action.triggered.connect(lambda: hcmgis_vectortiles_basemap('ESRI Charted Territory'))
+        self.vectortiles_menu.addAction(self.esrichartedterritory_action)
+
         #ESRI OSM Standard
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")  
         self.esriosmstandard_action = QAction(icon, u'ESRI OSM Standard', self.iface.mainWindow())
@@ -261,11 +267,11 @@ class hcmgis_menu ():
         self.basemap_menu.addAction(self.bingaerial_action)
 
         self.basemap_menu.addSeparator()
-        #Carto Antique
+        #Carto Light
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_carto.png")
-        self.cartoantique_action = QAction(icon, u'Carto Antique', self.iface.mainWindow())
-        self.cartoantique_action.triggered.connect(lambda: hcmgis_basemap('Carto Antique'))
-        self.basemap_menu.addAction(self.cartoantique_action)
+        self.cartolight_action = QAction(icon, u'Carto Light', self.iface.mainWindow())
+        self.cartolight_action.triggered.connect(lambda: hcmgis_basemap('Carto Light'))
+        self.basemap_menu.addAction(self.cartolight_action)
 
         #Carto Dark
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_carto.png")
@@ -273,17 +279,12 @@ class hcmgis_menu ():
         self.cartodark_action.triggered.connect(lambda: hcmgis_basemap('Carto Dark'))
         self.basemap_menu.addAction(self.cartodark_action)
 
-        #Carto Eco
+        #Carto Voyager
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_carto.png")
-        self.cartoeco_action = QAction(icon, u'Carto Eco', self.iface.mainWindow())
-        self.cartoeco_action.triggered.connect(lambda: hcmgis_basemap('Carto Eco'))
-        self.basemap_menu.addAction(self.cartoeco_action)
+        self.cartovoyager_action = QAction(icon, u'Carto Voyager', self.iface.mainWindow())
+        self.cartovoyager_action.triggered.connect(lambda: hcmgis_basemap('Carto Voyager'))
+        self.basemap_menu.addAction(self.cartovoyager_action)
 
-        #Carto Light
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_carto.png")
-        self.cartolight_action = QAction(icon, u'Carto Light', self.iface.mainWindow())
-        self.cartolight_action.triggered.connect(lambda: hcmgis_basemap('Carto Light'))
-        self.basemap_menu.addAction(self.cartolight_action)
 
         self.basemap_menu.addSeparator()
         #########################
@@ -478,18 +479,18 @@ class hcmgis_menu ():
         self.basemap_menu.addAction(self.hcmgis_vbd_action)
        
         #BecaGIS Maps
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_becamaps.png")
-        self.hcmgis_osm_action = QAction(icon, u'BecaGIS Maps', self.iface.mainWindow())
-        self.hcmgis_osm_action.triggered.connect(lambda: hcmgis_basemap('BecaGIS Maps'))		
-        self.basemap_menu.addAction(self.hcmgis_osm_action)
+        # icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_becamaps.png")
+        # self.hcmgis_osm_action = QAction(icon, u'BecaGIS Maps', self.iface.mainWindow())
+        # self.hcmgis_osm_action.triggered.connect(lambda: hcmgis_basemap('BecaGIS Maps'))		
+        # self.basemap_menu.addAction(self.hcmgis_osm_action)
 
         #HCMC OneMap
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_dxcenter.png")
-        self.hcmgis_osm_action = QAction(icon, u'HCMC OneMap', self.iface.mainWindow())
-        self.hcmgis_osm_action.triggered.connect(lambda: hcmgis_basemap('HCMC OneMap'))		
-        self.basemap_menu.addAction(self.hcmgis_osm_action)
+        # icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_dxcenter.png")
+        # self.hcmgis_osm_action = QAction(icon, u'HCMC OneMap', self.iface.mainWindow())
+        # self.hcmgis_osm_action.triggered.connect(lambda: hcmgis_basemap('HCMC OneMap'))		
+        # self.basemap_menu.addAction(self.hcmgis_osm_action)
 
-        self.basemap_menu.addSeparator()
+        # self.basemap_menu.addSeparator()
         ##############################
         # F4map - 2D
         #############################
@@ -554,7 +555,7 @@ class hcmgis_menu ():
 
         #HCMGIS OpenData submenu
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_open.png")
-        self.opendata_menu = QMenu(u'Download OpenData')
+        self.opendata_menu = QMenu(u'Download Open Data')
         self.hcmgis_add_submenu2(self.opendata_menu, icon)
 
 
@@ -579,23 +580,23 @@ class hcmgis_menu ():
         self.wof_action.triggered.connect(self.wof)
         self.opendata_menu.addAction(self.wof_action)
 
-        #Building Footprints from Microsoft
-        self.hcmgis_add_submenu(self.opendata_menu)
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_bing.png")
-        self.microsoft_action = QAction(icon, u'Microsoft Building Footprints - Releases', self.iface.mainWindow())
-        self.microsoft_action.triggered.connect(self.microsoft)
-        self.opendata_menu.addAction(self.microsoft_action)
+        # #Building Footprints from Microsoft
+        # self.hcmgis_add_submenu(self.opendata_menu)
+        # icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_bing.png")
+        # self.microsoft_action = QAction(icon, u'Microsoft Building Footprints - Releases', self.iface.mainWindow())
+        # self.microsoft_action.triggered.connect(self.microsoft)
+        # self.opendata_menu.addAction(self.microsoft_action)
 
-        #Building Footprints from Microsoft
-        self.hcmgis_add_submenu(self.opendata_menu)
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_bing.png")
-        self.global_microsoft_action = QAction(icon, u'Microsoft Building Footprints - Global', self.iface.mainWindow())
-        self.global_microsoft_action.triggered.connect(self.global_microsoft)
-        self.opendata_menu.addAction(self.global_microsoft_action)
+        # #Building Footprints from Microsoft
+        # self.hcmgis_add_submenu(self.opendata_menu)
+        # icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_bing.png")
+        # self.global_microsoft_action = QAction(icon, u'Microsoft Building Footprints - Global', self.iface.mainWindow())
+        # self.global_microsoft_action.triggered.connect(self.global_microsoft)
+        # self.opendata_menu.addAction(self.global_microsoft_action)
 
         #HCMGIS OpenData
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_basemaps.png")
-        self.opendata_action = QAction(icon, u'BecaGIS OpenData and more...', self.iface.mainWindow())
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_open.png")
+        self.opendata_action = QAction(icon, u'OGC Open Data', self.iface.mainWindow())
         self.opendata_action.triggered.connect(self.opendata)
         self.opendata_menu.addAction(self.opendata_action)
 
