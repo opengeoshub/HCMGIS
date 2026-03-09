@@ -1,16 +1,15 @@
 [general]
 name=HCMGIS
-qgisMinimumVersion=3.0
+qgisMinimumVersion=4.0
 description= HCMGIS - Basemaps, Download OpenData, Batch Converter, VN-2000 Projections, and Field Calculation Utilities
-about=- Basemaps: Add vector and raster basemaps from Google, Carto, ESRI, OSM Stamen, Vgrid, etc;- Batch Converter: Batch convert CSV to Point Shapefiles and other GIS formats (including OSM pbf, GeoPackage) in a folder and its subfolders;- Download OpenData:  Download Open Data from OSM Geofabrik, GADM, Who's On First (WOF), Microsoft Building Footprints, HCMGIS OpenData, Standford University, etc;- Vn-2000 Projections: Lookup EPSG Code for Vn-2000/ TM3 Projection for all Provinces in Vietnam;- Spatial Processing: has been moved to BecaGIS Plugin;  - Attribute Calculation: merge/ split data fields, Vietnamese Font Converter: Unicode <-> TCVN3 <-> Vni-Windows, UPPER CASE, lower case.;
+about=- Basemaps: Add vector and raster basemaps from Google, Carto, ESRI, Vgrid, etc;- Batch Converter: Batch convert CSV to Point Shapefiles and other GIS formats (including OSM pbf, GeoPackage) in a folder and its subfolders;- Download OpenData: Download Open Data from OSM Geofabrik, GADM, Who's On First (WOF), and other OGC OpenData Repos;- Vn-2000 Projections: Lookup EPSG Code for Vn-2000/ TM3 Projection for all Provinces in Vietnam;- Spatial Processing: has been moved to BecaGIS Plugin;  - Attribute Calculation: merge/ split data fields, Vietnamese Font Converter: Unicode <-> TCVN3 <-> Vni-Windows, UPPER CASE, lower case.
 category=Vector
-version=26.3.2
+version=26.3.10
 author=Thang Quach
 email=quachdongthang@gmai.com
-homepage= https://thangqd.github.io
-tracker = https://github.com/thangqd/HCMGIS/issues
-repository=https://github.com/thangqd/HCMGIS
+homepage= https://gishub.vn
+tracker = https://github.com/opengeoshub/HCMGIS/issues
+repository= https://github.com/opengeoshub/HCMGIS
 experimental=False
 deprecated=False
 icon=icons/hcmgis_opendata.png
-supportsQt6=True

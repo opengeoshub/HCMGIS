@@ -59,7 +59,7 @@ class hcmgis_menu ():
 
         # OpenData_basemap submenu
         self.basemap_menu = QMenu(u'Basemaps')
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_basemaps.png")
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vectortiles.png")
         self.hcmgis_add_submenu2(self.basemap_menu, icon)
 
         ############################################
