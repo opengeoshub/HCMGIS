@@ -59,7 +59,7 @@ class hcmgis_menu ():
 
         # OpenData_basemap submenu
         self.basemap_menu = QMenu(u'Basemaps')
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vectortiles.png")
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_basemap.svg")
         self.hcmgis_add_submenu2(self.basemap_menu, icon)
 
         ############################################
@@ -68,7 +68,7 @@ class hcmgis_menu ():
         # Adding "Vector tiles" submenu under "Basemaps"
         self.vectortiles_menu = QMenu(u'Vector tiles')
         # icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vectortiles.png")
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vgrid.png")
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vectortiles.png")
         self.hcmgis_add_submenu3(self.vectortiles_menu,icon)
 
         ############################################
@@ -212,7 +212,7 @@ class hcmgis_menu ():
         # Vgrid
         ###########################################
         'Vgrid Vietnam Islands',
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vgrid.png")  
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vgrid.svg")  
         self.vgridbright_action = QAction(icon, u'Vgrid Vietnam Islands', self.iface.mainWindow())
         self.vgridbright_action.triggered.connect(lambda: hcmgis_vectortiles_basemap('Vgrid Vietnam Islands'))
         self.vectortiles_menu.addAction(self.vgridbright_action)
@@ -494,7 +494,7 @@ class hcmgis_menu ():
         ##############################
         # F4map - 2D
         #############################
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vgrid.png")
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vgrid.svg")
         self.f4map_action = QAction(icon, u'Vgrid', self.iface.mainWindow())
         self.f4map_action.triggered.connect(lambda: hcmgis_basemap('Vgrid'))
         self.basemap_menu.addAction(self.f4map_action)
