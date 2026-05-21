@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_prefix_suffix_form(object):
     def setupUi(self, hcmgis_prefix_suffix_form):
         hcmgis_prefix_suffix_form.setObjectName("hcmgis_prefix_suffix_form")
-        hcmgis_prefix_suffix_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_prefix_suffix_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_prefix_suffix_form.setEnabled(True)
         hcmgis_prefix_suffix_form.resize(343, 287)
         hcmgis_prefix_suffix_form.setMouseTracking(False)
@@ -31,7 +33,9 @@ class Ui_hcmgis_prefix_suffix_form(object):
         self.CboField.setObjectName("CboField")
         self.verticalLayout.addWidget(self.CboField)
         self.gridLayout = QtWidgets.QGridLayout()
-        self.gridLayout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetNoConstraint)
+        self.gridLayout.setSizeConstraint(
+            QtWidgets.QLayout.SizeConstraint.SetNoConstraint
+        )
         self.gridLayout.setObjectName("gridLayout")
         self.LblChar = QtWidgets.QLabel(parent=hcmgis_prefix_suffix_form)
         self.LblChar.setObjectName("LblChar")
@@ -126,28 +130,41 @@ class Ui_hcmgis_prefix_suffix_form(object):
         self.CboCharSuffix.addItem("")
         self.gridLayout.addWidget(self.CboCharSuffix, 3, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
-        self.ChkSelectedFeaturesOnly = QtWidgets.QCheckBox(parent=hcmgis_prefix_suffix_form)
+        self.ChkSelectedFeaturesOnly = QtWidgets.QCheckBox(
+            parent=hcmgis_prefix_suffix_form
+        )
         self.ChkSelectedFeaturesOnly.setObjectName("ChkSelectedFeaturesOnly")
         self.verticalLayout.addWidget(self.ChkSelectedFeaturesOnly)
         self.BtnOKCancel = QtWidgets.QDialogButtonBox(parent=hcmgis_prefix_suffix_form)
-        self.BtnOKCancel.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.BtnOKCancel.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Cancel
+            | QtWidgets.QDialogButtonBox.StandardButton.Ok
+        )
         self.BtnOKCancel.setObjectName("BtnOKCancel")
         self.verticalLayout.addWidget(self.BtnOKCancel)
 
         self.retranslateUi(hcmgis_prefix_suffix_form)
-        self.BtnOKCancel.accepted.connect(hcmgis_prefix_suffix_form.accept) # type: ignore
-        self.BtnOKCancel.rejected.connect(hcmgis_prefix_suffix_form.reject) # type: ignore
+        self.BtnOKCancel.accepted.connect(hcmgis_prefix_suffix_form.accept)  # type: ignore
+        self.BtnOKCancel.rejected.connect(hcmgis_prefix_suffix_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_prefix_suffix_form)
 
     def retranslateUi(self, hcmgis_prefix_suffix_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_prefix_suffix_form.setWindowTitle(_translate("hcmgis_prefix_suffix_form", "Add Prefix/ Suffix"))
+        hcmgis_prefix_suffix_form.setWindowTitle(
+            _translate("hcmgis_prefix_suffix_form", "Add Prefix/ Suffix")
+        )
         self.LblInput.setText(_translate("hcmgis_prefix_suffix_form", "Imput Layer"))
         self.LblOutput_2.setText(_translate("hcmgis_prefix_suffix_form", "Field"))
         self.LblChar.setText(_translate("hcmgis_prefix_suffix_form", "Prefix"))
-        self.LblChar_3.setText(_translate("hcmgis_prefix_suffix_form", "Linking Characters"))
-        self.CboCharPrefix.setItemText(0, _translate("hcmgis_prefix_suffix_form", "Space"))
-        self.CboCharPrefix.setItemText(1, _translate("hcmgis_prefix_suffix_form", "Tab"))
+        self.LblChar_3.setText(
+            _translate("hcmgis_prefix_suffix_form", "Linking Characters")
+        )
+        self.CboCharPrefix.setItemText(
+            0, _translate("hcmgis_prefix_suffix_form", "Space")
+        )
+        self.CboCharPrefix.setItemText(
+            1, _translate("hcmgis_prefix_suffix_form", "Tab")
+        )
         self.CboCharPrefix.setItemText(2, _translate("hcmgis_prefix_suffix_form", ","))
         self.CboCharPrefix.setItemText(3, _translate("hcmgis_prefix_suffix_form", "_"))
         self.CboCharPrefix.setItemText(4, _translate("hcmgis_prefix_suffix_form", "-"))
@@ -172,14 +189,20 @@ class Ui_hcmgis_prefix_suffix_form(object):
         self.CboCharPrefix.setItemText(23, _translate("hcmgis_prefix_suffix_form", "}"))
         self.CboCharPrefix.setItemText(24, _translate("hcmgis_prefix_suffix_form", "["))
         self.CboCharPrefix.setItemText(25, _translate("hcmgis_prefix_suffix_form", "]"))
-        self.CboCharPrefix.setItemText(26, _translate("hcmgis_prefix_suffix_form", "\'"))
-        self.CboCharPrefix.setItemText(27, _translate("hcmgis_prefix_suffix_form", "\""))
+        self.CboCharPrefix.setItemText(26, _translate("hcmgis_prefix_suffix_form", "'"))
+        self.CboCharPrefix.setItemText(27, _translate("hcmgis_prefix_suffix_form", '"'))
         self.CboCharPrefix.setItemText(28, _translate("hcmgis_prefix_suffix_form", "<"))
         self.CboCharPrefix.setItemText(29, _translate("hcmgis_prefix_suffix_form", ">"))
         self.LblChar_2.setText(_translate("hcmgis_prefix_suffix_form", "Suffix"))
-        self.LblChar_4.setText(_translate("hcmgis_prefix_suffix_form", "Linking Characters"))
-        self.CboCharSuffix.setItemText(0, _translate("hcmgis_prefix_suffix_form", "Space"))
-        self.CboCharSuffix.setItemText(1, _translate("hcmgis_prefix_suffix_form", "Tab"))
+        self.LblChar_4.setText(
+            _translate("hcmgis_prefix_suffix_form", "Linking Characters")
+        )
+        self.CboCharSuffix.setItemText(
+            0, _translate("hcmgis_prefix_suffix_form", "Space")
+        )
+        self.CboCharSuffix.setItemText(
+            1, _translate("hcmgis_prefix_suffix_form", "Tab")
+        )
         self.CboCharSuffix.setItemText(2, _translate("hcmgis_prefix_suffix_form", ","))
         self.CboCharSuffix.setItemText(3, _translate("hcmgis_prefix_suffix_form", "_"))
         self.CboCharSuffix.setItemText(4, _translate("hcmgis_prefix_suffix_form", "-"))
@@ -204,16 +227,21 @@ class Ui_hcmgis_prefix_suffix_form(object):
         self.CboCharSuffix.setItemText(23, _translate("hcmgis_prefix_suffix_form", "}"))
         self.CboCharSuffix.setItemText(24, _translate("hcmgis_prefix_suffix_form", "["))
         self.CboCharSuffix.setItemText(25, _translate("hcmgis_prefix_suffix_form", "]"))
-        self.CboCharSuffix.setItemText(26, _translate("hcmgis_prefix_suffix_form", "\'"))
-        self.CboCharSuffix.setItemText(27, _translate("hcmgis_prefix_suffix_form", "\""))
+        self.CboCharSuffix.setItemText(26, _translate("hcmgis_prefix_suffix_form", "'"))
+        self.CboCharSuffix.setItemText(27, _translate("hcmgis_prefix_suffix_form", '"'))
         self.CboCharSuffix.setItemText(28, _translate("hcmgis_prefix_suffix_form", "<"))
         self.CboCharSuffix.setItemText(29, _translate("hcmgis_prefix_suffix_form", ">"))
-        self.ChkSelectedFeaturesOnly.setText(_translate("hcmgis_prefix_suffix_form", "Selected features only"))
+        self.ChkSelectedFeaturesOnly.setText(
+            _translate("hcmgis_prefix_suffix_form", "Selected features only")
+        )
+
+
 from qgis.gui import QgsFieldComboBox, QgsMapLayerComboBox
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_prefix_suffix_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_prefix_suffix_form()

@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_reprojection_form(object):
     def setupUi(self, hcmgis_reprojection_form):
         hcmgis_reprojection_form.setObjectName("hcmgis_reprojection_form")
-        hcmgis_reprojection_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_reprojection_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_reprojection_form.setEnabled(True)
         hcmgis_reprojection_form.resize(370, 288)
         hcmgis_reprojection_form.setMouseTracking(False)
@@ -56,27 +58,37 @@ class Ui_hcmgis_reprojection_form(object):
         self.gridLayout.addWidget(self.BtnOutput, 0, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.BtnOKCancel = QtWidgets.QDialogButtonBox(parent=hcmgis_reprojection_form)
-        self.BtnOKCancel.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.BtnOKCancel.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Cancel
+            | QtWidgets.QDialogButtonBox.StandardButton.Ok
+        )
         self.BtnOKCancel.setObjectName("BtnOKCancel")
         self.verticalLayout.addWidget(self.BtnOKCancel)
 
         self.retranslateUi(hcmgis_reprojection_form)
-        self.BtnOKCancel.accepted.connect(hcmgis_reprojection_form.accept) # type: ignore
-        self.BtnOKCancel.rejected.connect(hcmgis_reprojection_form.reject) # type: ignore
+        self.BtnOKCancel.accepted.connect(hcmgis_reprojection_form.accept)  # type: ignore
+        self.BtnOKCancel.rejected.connect(hcmgis_reprojection_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_reprojection_form)
 
     def retranslateUi(self, hcmgis_reprojection_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_reprojection_form.setWindowTitle(_translate("hcmgis_reprojection_form", "Layer Reprojection"))
+        hcmgis_reprojection_form.setWindowTitle(
+            _translate("hcmgis_reprojection_form", "Layer Reprojection")
+        )
         self.LblInput.setText(_translate("hcmgis_reprojection_form", "Input Layer"))
         self.LblOutput_4.setText(_translate("hcmgis_reprojection_form", "Target CRS"))
-        self.LblOutput_3.setText(_translate("hcmgis_reprojection_form", "Output Shapefile"))
+        self.LblOutput_3.setText(
+            _translate("hcmgis_reprojection_form", "Output Shapefile")
+        )
         self.BtnOutput.setText(_translate("hcmgis_reprojection_form", "Browse..."))
+
+
 from qgis.gui import QgsMapLayerComboBox, QgsProjectionSelectionWidget
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_reprojection_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_reprojection_form()

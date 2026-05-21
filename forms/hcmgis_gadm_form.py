@@ -64,27 +64,40 @@ class Ui_hcmgis_gadm_form(object):
         self.gridLayout_2.addWidget(self.LblStatus, 2, 0, 1, 2)
         self.verticalLayout.addLayout(self.gridLayout_2)
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_gadm_form)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_gadm_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_gadm_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_gadm_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_gadm_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_gadm_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_gadm_form)
 
     def retranslateUi(self, hcmgis_gadm_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_gadm_form.setWindowTitle(_translate("hcmgis_gadm_form", "Download GADM Data by Country"))
-        self.label.setText(_translate("hcmgis_gadm_form", "Download Global Administrative Areas by Country from GADM"))
+        hcmgis_gadm_form.setWindowTitle(
+            _translate("hcmgis_gadm_form", "Download GADM Data by Country")
+        )
+        self.label.setText(
+            _translate(
+                "hcmgis_gadm_form",
+                "Download Global Administrative Areas by Country from GADM",
+            )
+        )
         self.label_2.setText(_translate("hcmgis_gadm_form", "Level of Detail"))
         self.label_3.setText(_translate("hcmgis_gadm_form", "Select Country"))
         self.BtnOutputFolder.setText(_translate("hcmgis_gadm_form", "Browse..."))
-        self.Label.setText(_translate("hcmgis_gadm_form", "Select folder to save shapefile"))
+        self.Label.setText(
+            _translate("hcmgis_gadm_form", "Select folder to save shapefile")
+        )
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_gadm_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_gadm_form()

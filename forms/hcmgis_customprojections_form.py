@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_customprojections_form(object):
     def setupUi(self, hcmgis_customprojections_form):
         hcmgis_customprojections_form.setObjectName("hcmgis_customprojections_form")
-        hcmgis_customprojections_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_customprojections_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_customprojections_form.setEnabled(True)
         hcmgis_customprojections_form.resize(688, 308)
         hcmgis_customprojections_form.setMouseTracking(False)
@@ -36,7 +38,9 @@ class Ui_hcmgis_customprojections_form(object):
         self.radProvinces.setObjectName("radProvinces")
         self.gridLayout.addWidget(self.radProvinces, 1, 0, 1, 1)
         self.cboProvinces = QtWidgets.QComboBox(parent=hcmgis_customprojections_form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.cboProvinces.sizePolicy().hasHeightForWidth())
@@ -72,22 +76,32 @@ class Ui_hcmgis_customprojections_form(object):
         self.gridLayout.addWidget(self.cboEPSG, 1, 3, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout)
         self.BtnClose = QtWidgets.QDialogButtonBox(parent=hcmgis_customprojections_form)
-        self.BtnClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnClose.setObjectName("BtnClose")
         self.verticalLayout.addWidget(self.BtnClose)
 
         self.retranslateUi(hcmgis_customprojections_form)
-        self.BtnClose.accepted.connect(hcmgis_customprojections_form.accept) # type: ignore
-        self.BtnClose.rejected.connect(hcmgis_customprojections_form.reject) # type: ignore
+        self.BtnClose.accepted.connect(hcmgis_customprojections_form.accept)  # type: ignore
+        self.BtnClose.rejected.connect(hcmgis_customprojections_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_customprojections_form)
 
     def retranslateUi(self, hcmgis_customprojections_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_customprojections_form.setWindowTitle(_translate("hcmgis_customprojections_form", "VN-2000 Projections"))
-        self.LblEPSGInfo.setText(_translate("hcmgis_customprojections_form", "EPSG Info:"))
+        hcmgis_customprojections_form.setWindowTitle(
+            _translate("hcmgis_customprojections_form", "VN-2000 Projections")
+        )
+        self.LblEPSGInfo.setText(
+            _translate("hcmgis_customprojections_form", "EPSG Info:")
+        )
         self.label.setText(_translate("hcmgis_customprojections_form", "VN-200/ TM-3"))
-        self.radProvinces.setText(_translate("hcmgis_customprojections_form", "Search by Province"))
-        self.radEPSG.setText(_translate("hcmgis_customprojections_form", "Search by EPSG Code"))
+        self.radProvinces.setText(
+            _translate("hcmgis_customprojections_form", "Search by Province")
+        )
+        self.radEPSG.setText(
+            _translate("hcmgis_customprojections_form", "Search by EPSG Code")
+        )
         self.cboEPSG.setItemText(0, _translate("hcmgis_customprojections_form", "9205"))
         self.cboEPSG.setItemText(1, _translate("hcmgis_customprojections_form", "9206"))
         self.cboEPSG.setItemText(2, _translate("hcmgis_customprojections_form", "9207"))
@@ -98,17 +112,32 @@ class Ui_hcmgis_customprojections_form(object):
         self.cboEPSG.setItemText(7, _translate("hcmgis_customprojections_form", "9211"))
         self.cboEPSG.setItemText(8, _translate("hcmgis_customprojections_form", "9212"))
         self.cboEPSG.setItemText(9, _translate("hcmgis_customprojections_form", "9213"))
-        self.cboEPSG.setItemText(10, _translate("hcmgis_customprojections_form", "9214"))
-        self.cboEPSG.setItemText(11, _translate("hcmgis_customprojections_form", "9215"))
-        self.cboEPSG.setItemText(12, _translate("hcmgis_customprojections_form", "9216"))
-        self.cboEPSG.setItemText(13, _translate("hcmgis_customprojections_form", "5899"))
-        self.cboEPSG.setItemText(14, _translate("hcmgis_customprojections_form", "5898"))
-        self.cboEPSG.setItemText(15, _translate("hcmgis_customprojections_form", "9217"))
-        self.cboEPSG.setItemText(16, _translate("hcmgis_customprojections_form", "9218"))
+        self.cboEPSG.setItemText(
+            10, _translate("hcmgis_customprojections_form", "9214")
+        )
+        self.cboEPSG.setItemText(
+            11, _translate("hcmgis_customprojections_form", "9215")
+        )
+        self.cboEPSG.setItemText(
+            12, _translate("hcmgis_customprojections_form", "9216")
+        )
+        self.cboEPSG.setItemText(
+            13, _translate("hcmgis_customprojections_form", "5899")
+        )
+        self.cboEPSG.setItemText(
+            14, _translate("hcmgis_customprojections_form", "5898")
+        )
+        self.cboEPSG.setItemText(
+            15, _translate("hcmgis_customprojections_form", "9217")
+        )
+        self.cboEPSG.setItemText(
+            16, _translate("hcmgis_customprojections_form", "9218")
+        )
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_customprojections_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_customprojections_form()

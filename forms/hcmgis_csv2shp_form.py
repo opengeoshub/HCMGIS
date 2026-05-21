@@ -23,7 +23,11 @@ class Ui_hcmgis_csv2shp_form(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(hcmgis_csv2shp_form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_2 = QtWidgets.QLabel(parent=hcmgis_csv2shp_form)
-        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.label_2.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignBottom
+            | QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+        )
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
         self.gridLayout_3 = QtWidgets.QGridLayout()
@@ -52,7 +56,11 @@ class Ui_hcmgis_csv2shp_form(object):
         font.setWeight(75)
         self.lblCSV.setFont(font)
         self.lblCSV.setText("")
-        self.lblCSV.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.lblCSV.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignBottom
+            | QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+        )
         self.lblCSV.setObjectName("lblCSV")
         self.verticalLayout.addWidget(self.lblCSV)
         self.lsCSV = QtWidgets.QListWidget(parent=hcmgis_csv2shp_form)
@@ -93,20 +101,27 @@ class Ui_hcmgis_csv2shp_form(object):
         self.verticalLayout.addWidget(self.txtError)
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_csv2shp_form)
         self.BtnApplyClose.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setCenterButtons(False)
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_csv2shp_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_csv2shp_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_csv2shp_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_csv2shp_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_csv2shp_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_csv2shp_form)
 
     def retranslateUi(self, hcmgis_csv2shp_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_csv2shp_form.setWindowTitle(_translate("hcmgis_csv2shp_form", "Batch Convert CSV to Point"))
-        self.label_2.setText(_translate("hcmgis_csv2shp_form", "Input CSV Point Folder"))
+        hcmgis_csv2shp_form.setWindowTitle(
+            _translate("hcmgis_csv2shp_form", "Batch Convert CSV to Point")
+        )
+        self.label_2.setText(
+            _translate("hcmgis_csv2shp_form", "Input CSV Point Folder")
+        )
         self.BtnInputFolder.setText(_translate("hcmgis_csv2shp_form", "Browse..."))
         self.label_7.setText(_translate("hcmgis_csv2shp_form", "Longitude Field"))
         self.label_8.setText(_translate("hcmgis_csv2shp_form", "Latitude Field"))
@@ -115,6 +130,7 @@ class Ui_hcmgis_csv2shp_form(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_csv2shp_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_csv2shp_form()

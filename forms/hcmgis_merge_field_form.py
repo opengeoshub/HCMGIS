@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_merge_field_form(object):
     def setupUi(self, hcmgis_merge_field_form):
         hcmgis_merge_field_form.setObjectName("hcmgis_merge_field_form")
-        hcmgis_merge_field_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_merge_field_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_merge_field_form.setEnabled(True)
         hcmgis_merge_field_form.resize(523, 484)
         hcmgis_merge_field_form.setMouseTracking(False)
@@ -31,9 +33,13 @@ class Ui_hcmgis_merge_field_form(object):
         self.ListFields = QtWidgets.QListWidget(parent=hcmgis_merge_field_form)
         self.ListFields.setAcceptDrops(False)
         self.ListFields.setDragEnabled(False)
-        self.ListFields.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.InternalMove)
+        self.ListFields.setDragDropMode(
+            QtWidgets.QAbstractItemView.DragDropMode.InternalMove
+        )
         self.ListFields.setAlternatingRowColors(True)
-        self.ListFields.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.ListFields.setSelectionMode(
+            QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection
+        )
         self.ListFields.setViewMode(QtWidgets.QListView.ViewMode.ListMode)
         self.ListFields.setSelectionRectVisible(True)
         self.ListFields.setObjectName("ListFields")
@@ -68,23 +74,40 @@ class Ui_hcmgis_merge_field_form(object):
         self.status.setObjectName("status")
         self.verticalLayout.addWidget(self.status)
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_merge_field_form)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_merge_field_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_merge_field_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_merge_field_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_merge_field_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_merge_field_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_merge_field_form)
 
     def retranslateUi(self, hcmgis_merge_field_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_merge_field_form.setWindowTitle(_translate("hcmgis_merge_field_form", "Merge Fields"))
+        hcmgis_merge_field_form.setWindowTitle(
+            _translate("hcmgis_merge_field_form", "Merge Fields")
+        )
         self.LblInput.setText(_translate("hcmgis_merge_field_form", "Input Layer"))
-        self.LblOutput_2.setText(_translate("hcmgis_merge_field_form", "Fields (selected order = merged field order)"))
-        self.ListFields.setToolTip(_translate("hcmgis_merge_field_form", "Drad & Drop để thay đổi thứ tự trường dữ liệu"))
+        self.LblOutput_2.setText(
+            _translate(
+                "hcmgis_merge_field_form",
+                "Fields (selected order = merged field order)",
+            )
+        )
+        self.ListFields.setToolTip(
+            _translate(
+                "hcmgis_merge_field_form",
+                "Drad & Drop để thay đổi thứ tự trường dữ liệu",
+            )
+        )
         self.ListFields.setSortingEnabled(True)
-        self.LblChar.setText(_translate("hcmgis_merge_field_form", "Linking characters"))
+        self.LblChar.setText(
+            _translate("hcmgis_merge_field_form", "Linking characters")
+        )
         self.CboChar.setItemText(0, _translate("hcmgis_merge_field_form", "Space"))
         self.CboChar.setItemText(1, _translate("hcmgis_merge_field_form", ","))
         self.CboChar.setItemText(2, _translate("hcmgis_merge_field_form", "_"))
@@ -96,11 +119,14 @@ class Ui_hcmgis_merge_field_form(object):
         self.CboChar.setItemText(8, _translate("hcmgis_merge_field_form", ":"))
         self.CboChar.setItemText(9, _translate("hcmgis_merge_field_form", ";"))
         self.CboChar.setItemText(10, _translate("hcmgis_merge_field_form", "&"))
+
+
 from qgsmaplayercombobox import QgsMapLayerComboBox
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_merge_field_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_merge_field_form()

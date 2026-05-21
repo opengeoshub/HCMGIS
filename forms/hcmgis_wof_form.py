@@ -60,27 +60,45 @@ class Ui_hcmgis_wof_form(object):
         self.gridLayout_2.addWidget(self.status, 3, 0, 1, 2)
         self.verticalLayout.addLayout(self.gridLayout_2)
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_wof_form)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_wof_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_wof_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_wof_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_wof_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_wof_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_wof_form)
 
     def retranslateUi(self, hcmgis_wof_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_wof_form.setWindowTitle(_translate("hcmgis_wof_form", "Download WOF Data by Country"))
-        self.label.setText(_translate("hcmgis_wof_form", "Download Global Administrative Areas by Country from Who\'s On First (WOF)"))
-        self.label_2.setText(_translate("hcmgis_wof_form", "All available placetype admin levels will be included with polygons and points"))
+        hcmgis_wof_form.setWindowTitle(
+            _translate("hcmgis_wof_form", "Download WOF Data by Country")
+        )
+        self.label.setText(
+            _translate(
+                "hcmgis_wof_form",
+                "Download Global Administrative Areas by Country from Who's On First (WOF)",
+            )
+        )
+        self.label_2.setText(
+            _translate(
+                "hcmgis_wof_form",
+                "All available placetype admin levels will be included with polygons and points",
+            )
+        )
         self.label_3.setText(_translate("hcmgis_wof_form", "Select Country"))
-        self.Label.setText(_translate("hcmgis_wof_form", "Select folder to save shapefile(s):"))
+        self.Label.setText(
+            _translate("hcmgis_wof_form", "Select folder to save shapefile(s):")
+        )
         self.BtnOutputFolder.setText(_translate("hcmgis_wof_form", "Browse..."))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_wof_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_wof_form()

@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_geofabrik_form(object):
     def setupUi(self, hcmgis_geofabrik_form):
         hcmgis_geofabrik_form.setObjectName("hcmgis_geofabrik_form")
-        hcmgis_geofabrik_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_geofabrik_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_geofabrik_form.setEnabled(True)
         hcmgis_geofabrik_form.resize(521, 315)
         hcmgis_geofabrik_form.setMouseTracking(False)
@@ -68,28 +70,42 @@ class Ui_hcmgis_geofabrik_form(object):
         self.gridLayout_2.addWidget(self.LblStatus, 2, 0, 1, 2)
         self.verticalLayout.addLayout(self.gridLayout_2)
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_geofabrik_form)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_geofabrik_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_geofabrik_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_geofabrik_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_geofabrik_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_geofabrik_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_geofabrik_form)
 
     def retranslateUi(self, hcmgis_geofabrik_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_geofabrik_form.setWindowTitle(_translate("hcmgis_geofabrik_form", "Download OSM Data by Country"))
-        self.label.setText(_translate("hcmgis_geofabrik_form", "Download OSM Data by Country from Geofabrik"))
+        hcmgis_geofabrik_form.setWindowTitle(
+            _translate("hcmgis_geofabrik_form", "Download OSM Data by Country")
+        )
+        self.label.setText(
+            _translate(
+                "hcmgis_geofabrik_form", "Download OSM Data by Country from Geofabrik"
+            )
+        )
         self.label_3.setText(_translate("hcmgis_geofabrik_form", "Select Country"))
         self.label_2.setText(_translate("hcmgis_geofabrik_form", "Select Region"))
-        self.label_4.setText(_translate("hcmgis_geofabrik_form", "Select State/ Province"))
-        self.Label.setText(_translate("hcmgis_geofabrik_form", "Select folder to save shapefile"))
+        self.label_4.setText(
+            _translate("hcmgis_geofabrik_form", "Select State/ Province")
+        )
+        self.Label.setText(
+            _translate("hcmgis_geofabrik_form", "Select folder to save shapefile")
+        )
         self.BtnOutputFolder.setText(_translate("hcmgis_geofabrik_form", "..."))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_geofabrik_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_geofabrik_form()

@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_microsoft_form(object):
     def setupUi(self, hcmgis_microsoft_form):
         hcmgis_microsoft_form.setObjectName("hcmgis_microsoft_form")
-        hcmgis_microsoft_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_microsoft_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_microsoft_form.setEnabled(True)
         hcmgis_microsoft_form.resize(451, 353)
         hcmgis_microsoft_form.setMouseTracking(False)
@@ -85,29 +87,48 @@ class Ui_hcmgis_microsoft_form(object):
         self.gridLayout_2.addWidget(self.BtnOutputFolder, 1, 1, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout_2)
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_microsoft_form)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_microsoft_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_microsoft_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_microsoft_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_microsoft_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_microsoft_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_microsoft_form)
 
     def retranslateUi(self, hcmgis_microsoft_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_microsoft_form.setWindowTitle(_translate("hcmgis_microsoft_form", "Download Building Footprints from Microsoft"))
+        hcmgis_microsoft_form.setWindowTitle(
+            _translate(
+                "hcmgis_microsoft_form", "Download Building Footprints from Microsoft"
+            )
+        )
         self.LblSize.setText(_translate("hcmgis_microsoft_form", "Unzipped size (MB)"))
-        self.label.setText(_translate("hcmgis_microsoft_form", "Download Building Footprints from Microsoft (GeoJSON format)"))
-        self.LblBuildings.setText(_translate("hcmgis_microsoft_form", "Number of Buildings"))
+        self.label.setText(
+            _translate(
+                "hcmgis_microsoft_form",
+                "Download Building Footprints from Microsoft (GeoJSON format)",
+            )
+        )
+        self.LblBuildings.setText(
+            _translate("hcmgis_microsoft_form", "Number of Buildings")
+        )
         self.label_3.setText(_translate("hcmgis_microsoft_form", "Select Country"))
-        self.label_4.setText(_translate("hcmgis_microsoft_form", "Select State/ Province"))
-        self.Label.setText(_translate("hcmgis_microsoft_form", "Select folder to save shapefile"))
+        self.label_4.setText(
+            _translate("hcmgis_microsoft_form", "Select State/ Province")
+        )
+        self.Label.setText(
+            _translate("hcmgis_microsoft_form", "Select folder to save shapefile")
+        )
         self.BtnOutputFolder.setText(_translate("hcmgis_microsoft_form", "..."))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_microsoft_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_microsoft_form()

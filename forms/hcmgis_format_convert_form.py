@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_format_convert_form(object):
     def setupUi(self, hcmgis_format_convert_form):
         hcmgis_format_convert_form.setObjectName("hcmgis_format_convert_form")
-        hcmgis_format_convert_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_format_convert_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_format_convert_form.setEnabled(True)
         hcmgis_format_convert_form.resize(572, 454)
         font = QtGui.QFont()
@@ -52,7 +54,11 @@ class Ui_hcmgis_format_convert_form(object):
         self.gridLayout_2.addWidget(self.cboInputFormat, 2, 0, 1, 1)
         self.verticalLayout.addLayout(self.gridLayout_2)
         self.label_2 = QtWidgets.QLabel(parent=hcmgis_format_convert_form)
-        self.label_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.label_2.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignBottom
+            | QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+        )
         self.label_2.setObjectName("label_2")
         self.verticalLayout.addWidget(self.label_2)
         self.gridLayout_3 = QtWidgets.QGridLayout()
@@ -81,7 +87,11 @@ class Ui_hcmgis_format_convert_form(object):
         font.setWeight(75)
         self.lblFiles.setFont(font)
         self.lblFiles.setText("")
-        self.lblFiles.setAlignment(QtCore.Qt.AlignmentFlag.AlignBottom|QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft)
+        self.lblFiles.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignBottom
+            | QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+        )
         self.lblFiles.setObjectName("lblFiles")
         self.verticalLayout.addWidget(self.lblFiles)
         self.lsFiles = QtWidgets.QListWidget(parent=hcmgis_format_convert_form)
@@ -105,44 +115,82 @@ class Ui_hcmgis_format_convert_form(object):
         self.txtError = QtWidgets.QTextEdit(parent=hcmgis_format_convert_form)
         self.txtError.setObjectName("txtError")
         self.verticalLayout.addWidget(self.txtError)
-        self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_format_convert_form)
+        self.BtnApplyClose = QtWidgets.QDialogButtonBox(
+            parent=hcmgis_format_convert_form
+        )
         self.BtnApplyClose.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setCenterButtons(False)
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_format_convert_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_format_convert_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_format_convert_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_format_convert_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_format_convert_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_format_convert_form)
 
     def retranslateUi(self, hcmgis_format_convert_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_format_convert_form.setWindowTitle(_translate("hcmgis_format_convert_form", "Vector Format Batch Converter"))
-        self.cboOutputFormat.setItemText(0, _translate("hcmgis_format_convert_form", "GeoJSON"))
-        self.cboOutputFormat.setItemText(1, _translate("hcmgis_format_convert_form", "Esri Shapefile"))
-        self.cboOutputFormat.setItemText(2, _translate("hcmgis_format_convert_form", "GPKG"))
-        self.cboOutputFormat.setItemText(3, _translate("hcmgis_format_convert_form", "GML"))
-        self.cboOutputFormat.setItemText(4, _translate("hcmgis_format_convert_form", "KML"))
-        self.cboOutputFormat.setItemText(5, _translate("hcmgis_format_convert_form", "CSV"))
+        hcmgis_format_convert_form.setWindowTitle(
+            _translate("hcmgis_format_convert_form", "Vector Format Batch Converter")
+        )
+        self.cboOutputFormat.setItemText(
+            0, _translate("hcmgis_format_convert_form", "GeoJSON")
+        )
+        self.cboOutputFormat.setItemText(
+            1, _translate("hcmgis_format_convert_form", "Esri Shapefile")
+        )
+        self.cboOutputFormat.setItemText(
+            2, _translate("hcmgis_format_convert_form", "GPKG")
+        )
+        self.cboOutputFormat.setItemText(
+            3, _translate("hcmgis_format_convert_form", "GML")
+        )
+        self.cboOutputFormat.setItemText(
+            4, _translate("hcmgis_format_convert_form", "KML")
+        )
+        self.cboOutputFormat.setItemText(
+            5, _translate("hcmgis_format_convert_form", "CSV")
+        )
         self.label_7.setText(_translate("hcmgis_format_convert_form", "Output Format"))
         self.label_8.setText(_translate("hcmgis_format_convert_form", "Input Format"))
-        self.cboInputFormat.setItemText(0, _translate("hcmgis_format_convert_form", "SHP"))
-        self.cboInputFormat.setItemText(1, _translate("hcmgis_format_convert_form", "GPKG"))
-        self.cboInputFormat.setItemText(2, _translate("hcmgis_format_convert_form", "PBF"))
-        self.cboInputFormat.setItemText(3, _translate("hcmgis_format_convert_form", "GeoJSON"))
-        self.cboInputFormat.setItemText(4, _translate("hcmgis_format_convert_form", "GML"))
-        self.cboInputFormat.setItemText(5, _translate("hcmgis_format_convert_form", "DXF"))
-        self.cboInputFormat.setItemText(6, _translate("hcmgis_format_convert_form", "DGN"))
-        self.cboInputFormat.setItemText(7, _translate("hcmgis_format_convert_form", "KML"))
+        self.cboInputFormat.setItemText(
+            0, _translate("hcmgis_format_convert_form", "SHP")
+        )
+        self.cboInputFormat.setItemText(
+            1, _translate("hcmgis_format_convert_form", "GPKG")
+        )
+        self.cboInputFormat.setItemText(
+            2, _translate("hcmgis_format_convert_form", "PBF")
+        )
+        self.cboInputFormat.setItemText(
+            3, _translate("hcmgis_format_convert_form", "GeoJSON")
+        )
+        self.cboInputFormat.setItemText(
+            4, _translate("hcmgis_format_convert_form", "GML")
+        )
+        self.cboInputFormat.setItemText(
+            5, _translate("hcmgis_format_convert_form", "DXF")
+        )
+        self.cboInputFormat.setItemText(
+            6, _translate("hcmgis_format_convert_form", "DGN")
+        )
+        self.cboInputFormat.setItemText(
+            7, _translate("hcmgis_format_convert_form", "KML")
+        )
         self.label_2.setText(_translate("hcmgis_format_convert_form", "Input Folder"))
-        self.BtnInputFolder.setText(_translate("hcmgis_format_convert_form", "Browse..."))
+        self.BtnInputFolder.setText(
+            _translate("hcmgis_format_convert_form", "Browse...")
+        )
         self.label.setText(_translate("hcmgis_format_convert_form", "Errors Log"))
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_format_convert_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_format_convert_form()

@@ -12,7 +12,9 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_hcmgis_split_field_form(object):
     def setupUi(self, hcmgis_split_field_form):
         hcmgis_split_field_form.setObjectName("hcmgis_split_field_form")
-        hcmgis_split_field_form.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        hcmgis_split_field_form.setWindowModality(
+            QtCore.Qt.WindowModality.ApplicationModal
+        )
         hcmgis_split_field_form.setEnabled(True)
         hcmgis_split_field_form.resize(536, 313)
         hcmgis_split_field_form.setMouseTracking(False)
@@ -80,18 +82,23 @@ class Ui_hcmgis_split_field_form(object):
         self.status.setObjectName("status")
         self.verticalLayout.addWidget(self.status)
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_split_field_form)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.verticalLayout.addWidget(self.BtnApplyClose)
 
         self.retranslateUi(hcmgis_split_field_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_split_field_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_split_field_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_split_field_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_split_field_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_split_field_form)
 
     def retranslateUi(self, hcmgis_split_field_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_split_field_form.setWindowTitle(_translate("hcmgis_split_field_form", "Split Fields"))
+        hcmgis_split_field_form.setWindowTitle(
+            _translate("hcmgis_split_field_form", "Split Fields")
+        )
         self.LblInput.setText(_translate("hcmgis_split_field_form", "Input Layer"))
         self.LblOutput_2.setText(_translate("hcmgis_split_field_form", "Split field"))
         self.LblChar.setText(_translate("hcmgis_split_field_form", "Split character"))
@@ -121,16 +128,19 @@ class Ui_hcmgis_split_field_form(object):
         self.CboChar.setItemText(23, _translate("hcmgis_split_field_form", "}"))
         self.CboChar.setItemText(24, _translate("hcmgis_split_field_form", "["))
         self.CboChar.setItemText(25, _translate("hcmgis_split_field_form", "]"))
-        self.CboChar.setItemText(26, _translate("hcmgis_split_field_form", "\'"))
-        self.CboChar.setItemText(27, _translate("hcmgis_split_field_form", "\""))
+        self.CboChar.setItemText(26, _translate("hcmgis_split_field_form", "'"))
+        self.CboChar.setItemText(27, _translate("hcmgis_split_field_form", '"'))
         self.CboChar.setItemText(28, _translate("hcmgis_split_field_form", "<"))
         self.CboChar.setItemText(29, _translate("hcmgis_split_field_form", ">"))
+
+
 from qgsfieldcombobox import QgsFieldComboBox
 from qgsmaplayercombobox import QgsMapLayerComboBox
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_split_field_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_split_field_form()

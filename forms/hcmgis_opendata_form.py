@@ -20,7 +20,10 @@ class Ui_hcmgis_opendata_form(object):
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.BtnApplyClose = QtWidgets.QDialogButtonBox(parent=hcmgis_opendata_form)
         self.BtnApplyClose.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.BtnApplyClose.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.BtnApplyClose.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+            | QtWidgets.QDialogButtonBox.StandardButton.Close
+        )
         self.BtnApplyClose.setObjectName("BtnApplyClose")
         self.gridLayout_2.addWidget(self.BtnApplyClose, 10, 0, 1, 2)
         self.gridLayout = QtWidgets.QGridLayout()
@@ -35,10 +38,14 @@ class Ui_hcmgis_opendata_form(object):
         self.gridLayout.addWidget(self.LblTitle, 5, 0, 1, 1)
         self.BtnOutputFolder = QtWidgets.QPushButton(parent=hcmgis_opendata_form)
         self.BtnOutputFolder.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.BtnOutputFolder.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.BtnOutputFolder.sizePolicy().hasHeightForWidth()
+        )
         self.BtnOutputFolder.setSizePolicy(sizePolicy)
         self.BtnOutputFolder.setMaximumSize(QtCore.QSize(100, 16777215))
         font = QtGui.QFont()
@@ -54,19 +61,30 @@ class Ui_hcmgis_opendata_form(object):
         self.gridLayout.addWidget(self.cboServerType, 0, 1, 1, 2)
         self.LblWFSLayers = QtWidgets.QLabel(parent=hcmgis_opendata_form)
         self.LblWFSLayers.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
-        self.LblWFSLayers.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.LblWFSLayers.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
+        )
         self.LblWFSLayers.setObjectName("LblWFSLayers")
         self.gridLayout.addWidget(self.LblWFSLayers, 7, 0, 1, 3)
         self.TblWFSLayers = QtWidgets.QTableWidget(parent=hcmgis_opendata_form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.TblWFSLayers.sizePolicy().hasHeightForWidth())
         self.TblWFSLayers.setSizePolicy(sizePolicy)
         self.TblWFSLayers.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
         self.TblWFSLayers.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-        self.TblWFSLayers.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.DoubleClicked)
-        self.TblWFSLayers.setDragDropMode(QtWidgets.QAbstractItemView.DragDropMode.NoDragDrop)
+        self.TblWFSLayers.setEditTriggers(
+            QtWidgets.QAbstractItemView.EditTrigger.DoubleClicked
+        )
+        self.TblWFSLayers.setDragDropMode(
+            QtWidgets.QAbstractItemView.DragDropMode.NoDragDrop
+        )
         self.TblWFSLayers.setObjectName("TblWFSLayers")
         self.TblWFSLayers.setColumnCount(2)
         self.TblWFSLayers.setRowCount(0)
@@ -95,7 +113,10 @@ class Ui_hcmgis_opendata_form(object):
         self.LblFormat.setObjectName("LblFormat")
         self.gridLayout.addWidget(self.LblFormat, 14, 0, 1, 2)
         self.TxtTitle = QtWidgets.QPlainTextEdit(parent=hcmgis_opendata_form)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Preferred,
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.TxtTitle.sizePolicy().hasHeightForWidth())
@@ -152,17 +173,21 @@ class Ui_hcmgis_opendata_form(object):
         self.gridLayout_2.addLayout(self.gridLayout, 9, 0, 1, 2)
 
         self.retranslateUi(hcmgis_opendata_form)
-        self.BtnApplyClose.accepted.connect(hcmgis_opendata_form.accept) # type: ignore
-        self.BtnApplyClose.rejected.connect(hcmgis_opendata_form.reject) # type: ignore
+        self.BtnApplyClose.accepted.connect(hcmgis_opendata_form.accept)  # type: ignore
+        self.BtnApplyClose.rejected.connect(hcmgis_opendata_form.reject)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(hcmgis_opendata_form)
 
     def retranslateUi(self, hcmgis_opendata_form):
         _translate = QtCore.QCoreApplication.translate
-        hcmgis_opendata_form.setWindowTitle(_translate("hcmgis_opendata_form", "Download OpenData"))
+        hcmgis_opendata_form.setWindowTitle(
+            _translate("hcmgis_opendata_form", "Download OpenData")
+        )
         self.LblTitle.setText(_translate("hcmgis_opendata_form", "Title"))
         self.BtnOutputFolder.setText(_translate("hcmgis_opendata_form", "Browse..."))
         self.LblWFSLayers.setText(_translate("hcmgis_opendata_form", "WFS layers"))
-        self.TblWFSLayers.setToolTip(_translate("hcmgis_opendata_form", "Double Click to add selected Layers"))
+        self.TblWFSLayers.setToolTip(
+            _translate("hcmgis_opendata_form", "Double Click to add selected Layers")
+        )
         self.TblWFSLayers.setSortingEnabled(True)
         item = self.TblWFSLayers.horizontalHeaderItem(0)
         item.setText(_translate("hcmgis_opendata_form", "Name"))
@@ -172,15 +197,20 @@ class Ui_hcmgis_opendata_form(object):
         self.LblFormat.setText(_translate("hcmgis_opendata_form", "Format"))
         self.Filter.setPlaceholderText(_translate("hcmgis_opendata_form", "Search"))
         self.label.setText(_translate("hcmgis_opendata_form", "Service Provider"))
-        self.ChkSaveShapefile.setText(_translate("hcmgis_opendata_form", "Save layers to disk"))
+        self.ChkSaveShapefile.setText(
+            _translate("hcmgis_opendata_form", "Save layers to disk")
+        )
         self.lblAbstract.setText(_translate("hcmgis_opendata_form", "Abstract"))
         self.BtnConnect.setText(_translate("hcmgis_opendata_form", "Connect"))
         self.label_2.setText(_translate("hcmgis_opendata_form", "Server URL:"))
+
+
 from qgsfilterlineedit import QgsFilterLineEdit
 
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     hcmgis_opendata_form = QtWidgets.QDialog()
     ui = Ui_hcmgis_opendata_form()
