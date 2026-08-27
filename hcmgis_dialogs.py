@@ -157,7 +157,7 @@ class hcmgis_dialog(QtWidgets.QDialog):
     ):
         initial_file_name = self.hcmgis_temp_file_name(name, ext)
         file_widget.setFilePath(initial_file_name)
-        file_widget.setStorageMode(QgsFileWidget.SaveFile)
+        file_widget.setStorageMode(QgsFileWidget.StorageMode.SaveFile)
 
         file_widget.setFilter(
             "ESRI Shapefile (*.shp);;GeoJSON (*.geojson);;KML (*.kml);;"
@@ -226,7 +226,7 @@ class hcmgis_dialog(QtWidgets.QDialog):
     def hcmgis_fill_list_widget_with_vector_layers(self, list_widget):
         # Add layers not in the list
         for layer in self.iface.mapCanvas().layers():
-            if layer.type() == QgsMapLayer.VectorLayer:
+            if layer.type() == QgsMapLayer.LayerType.VectorLayer:
                 found = False
                 for index in range(list_widget.count()):
                     if list_widget.item(index).text() == layer.name():
@@ -411,8 +411,13 @@ class hcmgis_dialog(QtWidgets.QDialog):
                 server_abstract = server_json["description"]
                 TxtTitle.insertPlainText(server_title)
                 TxtAbstract.insertPlainText(server_abstract)
-            except Exception:
-                pass
+            except Exception as e:
+                # Landing page metadata is optional; continue with collections.
+                QgsMessageLog.logMessage(
+                    "OGC landing page metadata unavailable: %s" % e,
+                    "HCMGIS",
+                    Qgis.MessageLevel.Warning,
+                )
             collections_response = _hcmgis_requests_get(url_collections)
             if collections_response is not None:
                 data_json = collections_response.json()
@@ -3573,10 +3578,10 @@ class hcmgis_microsoft_dialog(hcmgis_dialog, Ui_hcmgis_microsoft_form):
 
     try:
         locale.setlocale(locale.LC_ALL, "en_US")
-    except:
-        # locale.getlocale()
-        # locale.resetlocale()
-        pass
+    except Exception as e:
+        QgsMessageLog.logMessage(
+            str(e), "HCMGIS", Qgis.MessageLevel.Warning
+        )
 
     country = [
         "Australia",
@@ -4729,8 +4734,8 @@ class hcmgis_customprojections_dialog(hcmgis_dialog, Ui_hcmgis_customprojections
         layers = [
             layer.id()
             for layer in QgsProject.instance().mapLayersByName("Intersection")
-            if layer.type() == QgsMapLayer.VectorLayer
-            and layer.geometryType() == QgsWkbTypes.PolygonGeometry
+            if layer.type() == QgsMapLayer.LayerType.VectorLayer
+            and layer.geometryType() == QgsWkbTypes.GeometryType.PolygonGeometry
             and layer.dataProvider().name() == "memory"
         ]  # Polygon
 
@@ -4762,7 +4767,7 @@ class hcmgis_customprojections_dialog(hcmgis_dialog, Ui_hcmgis_customprojections
             False,
         )  # Bool: slected feature only
 
-        if error == QgsVectorFileWriter.NoError:
+        if error == QgsVectorFileWriter.WriterError.NoError:
             try:
                 split = QgsVectorLayer(output, QFileInfo(output).baseName(), "ogr")
                 QgsProject.instance().addMapLayer(split)
@@ -4781,7 +4786,7 @@ class hcmgis_customprojections_dialog(hcmgis_dialog, Ui_hcmgis_customprojections
         return
 
         # for layer in QgsProject.instance().mapLayers().values():
-        #     if layer.type() == QgsMapLayer.VectorLayer and layer.name() == 'Intersection' and layer.geometryType() == QgsWkbTypes.PolygonGeometry:
+        #     if layer.type() == QgsMapLayer.LayerType.VectorLayer and layer.name() == 'Intersection' and layer.geometryType() == QgsWkbTypes.GeometryType.PolygonGeometry:
         #         QgsProject.instance().removeMapLayers([layer.id()])
         # return
 
@@ -4828,7 +4833,7 @@ class hcmgis_font_convert_dialog(hcmgis_dialog, Ui_hcmgis_font_convert_form):
         self.BtnApplyClose.button(
             QtWidgets.QDialogButtonBox.StandardButton.Close
         ).setAutoDefault(False)
-        self.CboInput.setFilters(QgsMapLayerProxyModel.VectorLayer)
+        self.CboInput.setFilters(QgsMapLayerProxyModel.Filter.VectorLayer)
         self.BtnApplyClose.button(
             QtWidgets.QDialogButtonBox.StandardButton.Apply
         ).clicked.connect(self.run)
@@ -4862,7 +4867,7 @@ class hcmgis_split_field_dialog(hcmgis_dialog, Ui_hcmgis_split_field_form):
         self.BtnApplyClose.button(
             QtWidgets.QDialogButtonBox.StandardButton.Close
         ).setAutoDefault(False)
-        self.CboInput.setFilters(QgsMapLayerProxyModel.VectorLayer)
+        self.CboInput.setFilters(QgsMapLayerProxyModel.Filter.VectorLayer)
         self.CboField.setLayer(self.CboInput.currentLayer())
         self.CboInput.activated.connect(self.update_field)
         self.BtnApplyClose.button(
@@ -4897,7 +4902,7 @@ class hcmgis_merge_field_dialog(hcmgis_dialog, Ui_hcmgis_merge_field_form):
         self.BtnApplyClose.button(
             QtWidgets.QDialogButtonBox.StandardButton.Close
         ).setAutoDefault(False)
-        self.CboInput.setFilters(QgsMapLayerProxyModel.VectorLayer)
+        self.CboInput.setFilters(QgsMapLayerProxyModel.Filter.VectorLayer)
         self.update_fields()
         self.BtnApplyClose.button(
             QtWidgets.QDialogButtonBox.StandardButton.Apply

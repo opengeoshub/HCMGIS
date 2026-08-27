@@ -376,13 +376,13 @@ class hcmgis_menu:
         self.basemap_menu.addAction(self.cartovoyager_action)
 
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_carto.png")
-        self.carto_api_key_action = QAction(
-            icon, "Set CARTO API Key...", self.iface.mainWindow()
+        self.carto_pref_action = QAction(
+            icon, "Set CARTO Basemap Credential...", self.iface.mainWindow()
         )
-        self.carto_api_key_action.triggered.connect(
-            lambda checked=False: hcmgis_carto_api_key_dialog()
+        self.carto_pref_action.triggered.connect(
+            lambda checked=False: hcmgis_carto_pref_dialog()
         )
-        self.basemap_menu.addAction(self.carto_api_key_action)
+        self.basemap_menu.addAction(self.carto_pref_action)
 
         self.basemap_menu.addSeparator()
         #########################

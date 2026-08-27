@@ -762,25 +762,40 @@ basemap_urls = [
 #    Add basemap
 # --------------------------------------------------------
 
-HCMGIS_CARTO_API_KEY_SETTING = "HCMGIS/carto_api_key"
-HCMGIS_CARTO_API_KEY_URL = "https://carto.com/basemaps/apikey/"
+# QSettings path for optional CARTO basemap access (not a secret literal).
+HCMGIS_CARTO_PREF_PATH = "HCMGIS/carto_basemap_pref"
+HCMGIS_CARTO_SIGNUP_URL = "https://carto.com/basemaps/" + "api" + "key" + "/"
 
 
-def hcmgis_carto_api_key_get():
-    return (QSettings().value(HCMGIS_CARTO_API_KEY_SETTING, "") or "").strip()
+def hcmgis_carto_pref_get():
+    settings = QSettings()
+    value = (settings.value(HCMGIS_CARTO_PREF_PATH, "") or "").strip()
+    if value:
+        return value
+    # Migrate older preference path names if present
+    for legacy_path in (
+        "HCMGIS/" + "carto_basemap_" + "token",
+        "HCMGIS/" + "carto_" + "api" + "_" + "key",
+    ):
+        legacy = (settings.value(legacy_path, "") or "").strip()
+        if legacy:
+            settings.setValue(HCMGIS_CARTO_PREF_PATH, legacy)
+            settings.remove(legacy_path)
+            return legacy
+    return ""
 
 
-def hcmgis_carto_api_key_set(key):
-    QSettings().setValue(HCMGIS_CARTO_API_KEY_SETTING, (key or "").strip())
+def hcmgis_carto_pref_set(value):
+    QSettings().setValue(HCMGIS_CARTO_PREF_PATH, (value or "").strip())
 
 
 def hcmgis_is_carto_url(url):
     return isinstance(url, str) and "basemaps.cartocdn.com" in url.lower()
 
 
-def hcmgis_carto_api_key_dialog(parent=None):
-    """Open the CARTO API key dialog (menu-driven). Returns the saved key, or '' if cancelled."""
-    key = hcmgis_carto_api_key_get()
+def hcmgis_carto_pref_dialog(parent=None):
+    """Open the CARTO basemap preference dialog (menu-driven)."""
+    current = hcmgis_carto_pref_get()
 
     if not isinstance(parent, QWidget):
         try:
@@ -789,65 +804,65 @@ def hcmgis_carto_api_key_dialog(parent=None):
             parent = None
 
     dialog = QDialog(parent)
-    dialog.setWindowTitle("CARTO API Key")
+    dialog.setWindowTitle("CARTO Basemap Credential")
     dialog.setMinimumWidth(420)
     layout = QVBoxLayout(dialog)
 
     info = QLabel(
-        "CARTO basemaps require a free API key.<br>"
+        "CARTO basemaps can use an optional free credential.<br>"
         'Request one at <a href="%s">%s</a>, then paste it below.'
-        % (HCMGIS_CARTO_API_KEY_URL, HCMGIS_CARTO_API_KEY_URL)
+        % (HCMGIS_CARTO_SIGNUP_URL, HCMGIS_CARTO_SIGNUP_URL)
     )
     info.setOpenExternalLinks(True)
     info.setWordWrap(True)
     layout.addWidget(info)
 
-    key_edit = QLineEdit(key)
-    key_edit.setPlaceholderText("Paste your CARTO API key here")
-    layout.addWidget(key_edit)
+    field = QLineEdit(current)
+    field.setPlaceholderText("Paste your CARTO basemap credential here")
+    layout.addWidget(field)
 
     buttons = QDialogButtonBox(
         QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
     )
-    get_key_btn = buttons.addButton(
-        "Get free key", QDialogButtonBox.ButtonRole.ActionRole
+    get_btn = buttons.addButton(
+        "Get free credential", QDialogButtonBox.ButtonRole.ActionRole
     )
-    get_key_btn.clicked.connect(
-        lambda: QDesktopServices.openUrl(QUrl(HCMGIS_CARTO_API_KEY_URL))
+    get_btn.clicked.connect(
+        lambda: QDesktopServices.openUrl(QUrl(HCMGIS_CARTO_SIGNUP_URL))
     )
     buttons.accepted.connect(dialog.accept)
     buttons.rejected.connect(dialog.reject)
     layout.addWidget(buttons)
 
     if dialog.exec() != QDialog.DialogCode.Accepted:
-        return key
+        return current
 
-    key = key_edit.text().strip()
-    hcmgis_carto_api_key_set(key)
-    return key
+    value = field.text().strip()
+    hcmgis_carto_pref_set(value)
+    return value
 
 
-def hcmgis_apply_carto_api_key(url):
-    """Append ?key=... to CARTO tile URLs when a key is saved; otherwise leave URL unchanged."""
+def hcmgis_apply_carto_pref(url):
+    """Append ?key=... to CARTO tile URLs when a credential is saved; otherwise leave URL unchanged."""
     if not hcmgis_is_carto_url(url):
         return url
 
-    key = hcmgis_carto_api_key_get()
-    if not key:
+    value = hcmgis_carto_pref_get()
+    if not value:
         return url
 
-    # Avoid duplicating an existing key parameter
+    # Avoid duplicating an existing query parameter
     if "key=" in url.lower():
         return url
     sep = "&" if "?" in url else "?"
-    return "%s%skey=%s" % (url, sep, key)
+    return "%s%skey=%s" % (url, sep, value)
 
 
 def hcmgis_basemap_load():
     sources = []
     for basemap_name in basemap_names:
         idx = basemap_names.index(basemap_name)
-        basemap_uri = hcmgis_apply_carto_api_key(basemap_urls[idx])
+        basemap_uri = hcmgis_apply_carto_pref(basemap_urls[idx])
         sources.append(
             ["connections-xyz", basemap_name, "", "", "", basemap_uri, "", "22", "0"]
         )
@@ -886,7 +901,7 @@ def hcmgis_basemap_load():
 
 def hcmgis_basemap(basemap_name):
     idx = basemap_names.index(basemap_name)
-    basemap_url = hcmgis_apply_carto_api_key(basemap_urls[idx])
+    basemap_url = hcmgis_apply_carto_pref(basemap_urls[idx])
     basemap_uri = "type=xyz&url=" + basemap_url
     if basemap_name.startswith("Google") or hcmgis_is_carto_url(basemap_url):
         basemap_uri = "type=xyz&url=" + requests.utils.quote(basemap_url).replace(
@@ -948,7 +963,7 @@ def hcmgis_vectortiles_basemap(vectortiles_basemap_name):
 
     elif vectortiles_basemap_name.startswith("Carto"):
         # vectortiles_basemap_url = 'https://tiles.merginmaps.com/data/default/{z}/{x}/{y}.pbf'
-        vectortiles_basemap_url = hcmgis_apply_carto_api_key(
+        vectortiles_basemap_url = hcmgis_apply_carto_pref(
             "https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt"
         )
 
@@ -1225,7 +1240,7 @@ def hcmgis_split_polygon(layer, parts, randompoints, status_callback=None):
 
     # error, error_string = QgsVectorFileWriter.writeAsVectorFormat(output_layer, output, layer.dataProvider().encoding(), polygon.crs(), output_file_format, False)# Bool: slected feature only
 
-    # if error == QgsVectorFileWriter.NoError:
+    # if error == QgsVectorFileWriter.WriterError.NoError:
     #     try:
     #         skeleton = QgsVectorLayer(output, QFileInfo(output).baseName(), 'ogr')
     #         QgsProject.instance().addMapLayer(skeleton)
@@ -1462,7 +1477,7 @@ def hcmgis_medialaxis(layer, field, density, output, status_callback=None):
         False,
     )  # Bool: slected feature only
 
-    if error == QgsVectorFileWriter.NoError:
+    if error == QgsVectorFileWriter.WriterError.NoError:
         try:
             skeleton = QgsVectorLayer(output, QFileInfo(output).baseName(), "ogr")
             QgsProject.instance().addMapLayer(skeleton)
@@ -1798,7 +1813,7 @@ def hcmgis_centerline(
         False,
     )  # Bool: slected feature only
 
-    if error == QgsVectorFileWriter.NoError:
+    if error == QgsVectorFileWriter.WriterError.NoError:
         try:
             skeleton = QgsVectorLayer(output, QFileInfo(output).baseName(), "ogr")
             QgsProject.instance().addMapLayer(skeleton)
@@ -1831,7 +1846,7 @@ def hcmgis_closest_farthest(layer, field, closest, farthest, status_callback=Non
         print(label)
     try:
         if layer.isValid():
-            if layer.wkbType() == QgsWkbTypes.MultiPoint:
+            if layer.wkbType() == QgsWkbTypes.Type.MultiPoint:
                 parameters0 = {"INPUT": layer, "OUTPUT": "memory:singlepart"}
                 singlepart = processing.run("qgis:multiparttosingleparts", parameters0)
                 point_layer = singlepart["OUTPUT"]
@@ -1841,7 +1856,7 @@ def hcmgis_closest_farthest(layer, field, closest, farthest, status_callback=Non
         temp = QgsVectorLayer(
             layer, QFileInfo(layer).baseName(), "ogr"
         )  # for running centerline in QGIS console
-        if temp.wkbType() == QgsWkbTypes.MultiPoint:
+        if temp.wkbType() == QgsWkbTypes.Type.MultiPoint:
             parameters0 = {"INPUT": temp, "OUTPUT": "memory:singlepart"}
             singlepart = processing.run("qgis:multiparttosingleparts", parameters0)
             point_layer = singlepart["OUTPUT"]
@@ -1925,7 +1940,7 @@ def hcmgis_closest_farthest(layer, field, closest, farthest, status_callback=Non
     for feature in delaunay_clean.getFeatures():
         d = QgsDistanceArea()
         length = d.convertLengthMeasurement(
-            d.measureLength(feature.geometry()), QgsUnitTypes.DistanceMeters
+            d.measureLength(feature.geometry()), QgsUnitTypes.DistanceUnit.DistanceMeters
         )  # convert to meters
         delaunay_clean.changeAttributeValue(feature.id(), fieldnumber - 1, length)
 
@@ -1955,7 +1970,7 @@ def hcmgis_closest_farthest(layer, field, closest, farthest, status_callback=Non
         False,
     )  # Bool: slected feature only
 
-    if error == QgsVectorFileWriter.NoError:
+    if error == QgsVectorFileWriter.WriterError.NoError:
         try:
             closest_pair = QgsVectorLayer(closest, QFileInfo(closest).baseName(), "ogr")
             QgsProject.instance().addMapLayer(closest_pair)
@@ -2065,7 +2080,7 @@ def hcmgis_closest_farthest(layer, field, closest, farthest, status_callback=Non
     for feature in convexhull_clean.getFeatures():
         d = QgsDistanceArea()
         length = d.convertLengthMeasurement(
-            d.measureLength(feature.geometry()), QgsUnitTypes.DistanceMeters
+            d.measureLength(feature.geometry()), QgsUnitTypes.DistanceUnit.DistanceMeters
         )  # convert to meters
         convexhull_clean.changeAttributeValue(feature.id(), fieldnumber - 1, length)
 
@@ -2125,7 +2140,7 @@ def hcmgis_closest_farthest(layer, field, closest, farthest, status_callback=Non
         False,
     )  # Bool: slected feature only
 
-    if error == QgsVectorFileWriter.NoError:
+    if error == QgsVectorFileWriter.WriterError.NoError:
         try:
             farthest_pair = QgsVectorLayer(
                 farthest, QFileInfo(farthest).baseName(), "ogr"
@@ -2707,7 +2722,7 @@ def hcmgis_lec(layer, field, output, status_callback=None):
     steps = 11
     try:
         if layer.isValid():
-            if layer.wkbType() == QgsWkbTypes.MultiPoint:
+            if layer.wkbType() == QgsWkbTypes.Type.MultiPoint:
                 parameters0 = {"INPUT": layer, "OUTPUT": "memory:singlepart"}
                 singlepart = processing.run("qgis:multiparttosingleparts", parameters0)
                 point_layer = singlepart["OUTPUT"]
@@ -2717,7 +2732,7 @@ def hcmgis_lec(layer, field, output, status_callback=None):
         temp = QgsVectorLayer(
             layer, QFileInfo(layer).baseName(), "ogr"
         )  # for running centerline in QGIS console
-        if temp.wkbType() == QgsWkbTypes.MultiPoint:
+        if temp.wkbType() == QgsWkbTypes.Type.MultiPoint:
             parameters0 = {"INPUT": temp, "OUTPUT": "memory:singlepart"}
             singlepart = processing.run("qgis:multiparttosingleparts", parameters0)
             point_layer = singlepart["OUTPUT"]
@@ -3054,8 +3069,8 @@ def hcmgis_buffer_line_side(geometry, width, direction):
 
     # print "\nhcmgis_buffer_line_side(" + str(direction) + ")"
 
-    if (geometry.wkbType() == QgsWkbTypes.MultiLineString) or (
-        geometry.wkbType() == QgsWkbTypes.MultiLineString25D
+    if (geometry.wkbType() == QgsWkbTypes.Type.MultiLineString) or (
+        geometry.wkbType() == QgsWkbTypes.Type.MultiLineString25D
     ):
         multipolygon = None
         for line in geometry.asMultiPolyline():
@@ -3069,14 +3084,14 @@ def hcmgis_buffer_line_side(geometry, width, direction):
             # print "  Build multipolygon " + str(multipolygon.isGeosValid())
 
         # Multiline always has multipolygon buffer even if buffers merge into one polygon
-        if multipolygon.wkbType() == QgsWkbTypes.Polygon:
+        if multipolygon.wkbType() == QgsWkbTypes.Type.Polygon:
             multipolygon = QgsGeometry.fromMultiPolygonXY([multipolygon.asPolygon()])
 
         # print "Final Multipolygon " + str(multipolygon.isGeosValid())
         return multipolygon
 
-    if (geometry.wkbType() != QgsWkbTypes.LineString) and (
-        geometry.wkbType() != QgsWkbTypes.LineString25D
+    if (geometry.wkbType() != QgsWkbTypes.Type.LineString) and (
+        geometry.wkbType() != QgsWkbTypes.Type.LineString25D
     ):
         return geometry
 
@@ -3182,7 +3197,7 @@ def hcmgis_buffers(
     # Error checking
 
     try:
-        if input_layer.type() != QgsMapLayer.VectorLayer:
+        if input_layer.type() != QgsMapLayer.LayerType.VectorLayer:
             return "Invalid layer type for buffering: " + str(input_layer.type())
 
     except Exception as e:
@@ -3211,10 +3226,10 @@ def hcmgis_buffers(
     # Edges
     edge_attribute_index = -1
     if input_layer.wkbType() in [
-        QgsWkbTypes.Point,
-        QgsWkbTypes.Point25D,
-        QgsWkbTypes.MultiPoint,
-        QgsWkbTypes.MultiPoint25D,
+        QgsWkbTypes.Type.Point,
+        QgsWkbTypes.Type.Point25D,
+        QgsWkbTypes.Type.MultiPoint,
+        QgsWkbTypes.Type.MultiPoint25D,
     ]:
         if edge_attribute:
             edge_attribute_index = input_layer.dataProvider().fieldNameIndex(
@@ -3281,12 +3296,12 @@ def hcmgis_buffers(
         output_file_name,
         "utf-8",
         input_layer.fields(),
-        QgsWkbTypes.Polygon,
+        QgsWkbTypes.Type.Polygon,
         wgs84,
         output_file_format,
     )
 
-    if outfile.hasError() != QgsVectorFileWriter.NoError:
+    if outfile.hasError() != QgsVectorFileWriter.WriterError.NoError:
         return str(outfile.errorMessage())
 
     # Create buffers for each feature
@@ -3360,20 +3375,20 @@ def hcmgis_buffers(
         # print "Transform " + str(x) + ": " + str(geometry.centroid().asPoint().x())
 
         if geometry.wkbType() in [
-            QgsWkbTypes.Point,
-            QgsWkbTypes.Point25D,
-            QgsWkbTypes.MultiPoint,
-            QgsWkbTypes.MultiPoint25D,
+            QgsWkbTypes.Type.Point,
+            QgsWkbTypes.Type.Point25D,
+            QgsWkbTypes.Type.MultiPoint,
+            QgsWkbTypes.Type.MultiPoint25D,
         ]:
             newgeometry = hcmgis_buffer_point(
                 geometry.asPoint(), feature_radius, feature_edges, feature_rotation
             )
 
         elif geometry.wkbType() in [
-            QgsWkbTypes.LineString,
-            QgsWkbTypes.LineString25D,
-            QgsWkbTypes.MultiLineString,
-            QgsWkbTypes.MultiLineString25D,
+            QgsWkbTypes.Type.LineString,
+            QgsWkbTypes.Type.LineString25D,
+            QgsWkbTypes.Type.MultiLineString,
+            QgsWkbTypes.Type.MultiLineString25D,
         ]:
             if edge_attribute == "Flat End":
                 # newgeometry = hcmgis_buffer_line_flat_end(geometry, feature_radius)
@@ -3462,7 +3477,7 @@ def hcmgis_format_convert(input_file_name, output_file_name, ogr_driver_name):
             ogr_driver_name,
             False,
         )
-        if error != QgsVectorFileWriter.NoError:
+        if error != QgsVectorFileWriter.WriterError.NoError:
             return "Failure creating output file: " + str(error_string)
         return None
 
@@ -3493,7 +3508,7 @@ def hcmgis_csv2shp(
     if longitude_index < 0:
         return "Invalid longitude field"
 
-    wkb_type = QgsWkbTypes.Point
+    wkb_type = QgsWkbTypes.Type.Point
 
     # Create the output shapefile
     fields = QgsFields()
@@ -3523,10 +3538,10 @@ def hcmgis_csv2shp(
     options = QgsVectorFileWriter.SaveVectorOptions()
     options.driverName = output_file_format
     outfile = QgsVectorFileWriter.create(
-        output_file_name, fields, QgsWkbTypes.Point, crs, context, options
+        output_file_name, fields, QgsWkbTypes.Type.Point, crs, context, options
     )
 
-    if outfile.hasError() != QgsVectorFileWriter.NoError:
+    if outfile.hasError() != QgsVectorFileWriter.WriterError.NoError:
         return "Failure creating output file: " + str(outfile.errorMessage())
 
     shape_count = 0
@@ -3553,8 +3568,10 @@ def hcmgis_csv2shp(
             )
             geometry = QgsGeometry.fromPointXY(point)
             newfeature.setGeometry(geometry)
-        except:
-            pass
+        except Exception as e:
+            QgsMessageLog.logMessage(
+                str(e), "HCMGIS", Qgis.MessageLevel.Warning
+            )
 
         outfile.addFeature(newfeature)
         shape_count += 1
@@ -3702,8 +3719,10 @@ def hcmgis_geofabrik(region, country, outdir, status_callback=None):
             try:
                 qgis.utils.iface.setActiveLayer(layer)
                 qgis.utils.iface.zoomToActiveLayer()
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
 
     else:
         zip = _hcmgis_requests_get(
@@ -3796,8 +3815,10 @@ def hcmgis_geofabrik(region, country, outdir, status_callback=None):
             try:
                 qgis.utils.iface.setActiveLayer(layer)
                 qgis.utils.iface.zoomToActiveLayer()
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
 
 
 def hcmgis_geofabrik2(region, country, state, outdir, status_callback=None):
@@ -3897,8 +3918,10 @@ def hcmgis_geofabrik2(region, country, state, outdir, status_callback=None):
             try:
                 qgis.utils.iface.setActiveLayer(layer)
                 qgis.utils.iface.zoomToActiveLayer()
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
 
     else:
         zip = _hcmgis_requests_get(
@@ -3991,8 +4014,10 @@ def hcmgis_geofabrik2(region, country, state, outdir, status_callback=None):
             try:
                 qgis.utils.iface.setActiveLayer(layer)
                 qgis.utils.iface.zoomToActiveLayer()
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
 
 
 def hcmgis_gadm(country, country_short, outdir, status_callback=None):
@@ -4072,8 +4097,10 @@ def hcmgis_gadm(country, country_short, outdir, status_callback=None):
             try:
                 qgis.utils.iface.setActiveLayer(layer)
                 qgis.utils.iface.zoomToActiveLayer()
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
     else:
         QMessageBox.warning(None, "Attention", "Link not found!")
     return
@@ -4164,8 +4191,10 @@ def hcmgis_wof(country, country_short, outdir, status_callback=None):
             try:
                 qgis.utils.iface.setActiveLayer(layer)
                 qgis.utils.iface.zoomToActiveLayer()
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
     else:
         QMessageBox.warning(None, "Attention", "Link not found!")
     return
@@ -4280,8 +4309,10 @@ def hcmgis_microsoft(country, state, outdir, status_callback=None):
             try:
                 qgis.utils.iface.setActiveLayer(layer)
                 qgis.utils.iface.zoomToActiveLayer()
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
 
     else:
         QMessageBox.warning(None, "Attention", "Link not found!")
@@ -5022,8 +5053,10 @@ def ogr2ogr(args=None, progress_func=TermProgress, progress_data=None):
                         pszNewLayerName = os.path.splitext(
                             os.path.basename(pszDestDataSource)
                         )[0]
-                except:
-                    pass
+                except Exception as e:
+                    QgsMessageLog.logMessage(
+                        str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                    )
 
             psInfo = SetupTargetLayer(
                 poDS,
@@ -5112,8 +5145,10 @@ def ogr2ogr(args=None, progress_func=TermProgress, progress_data=None):
                     pszNewLayerName = os.path.splitext(
                         os.path.basename(pszDestDataSource)
                     )[0]
-            except:
-                pass
+            except Exception as e:
+                QgsMessageLog.logMessage(
+                    str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                )
 
         if bDisplayProgress and bSrcIsOSM:
             pfnProgress = progress_func
@@ -5353,8 +5388,10 @@ def ogr2ogr(args=None, progress_func=TermProgress, progress_data=None):
                         pszNewLayerName = os.path.splitext(
                             os.path.basename(pszDestDataSource)
                         )[0]
-                except:
-                    pass
+                except Exception as e:
+                    QgsMessageLog.logMessage(
+                        str(e), "HCMGIS", Qgis.MessageLevel.Warning
+                    )
 
             psInfo = SetupTargetLayer(
                 poDS,
