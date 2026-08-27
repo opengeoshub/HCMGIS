@@ -762,12 +762,92 @@ basemap_urls = [
 #    Add basemap
 # --------------------------------------------------------
 
+HCMGIS_CARTO_API_KEY_SETTING = "HCMGIS/carto_api_key"
+HCMGIS_CARTO_API_KEY_URL = "https://carto.com/basemaps/apikey/"
+
+
+def hcmgis_carto_api_key_get():
+    return (QSettings().value(HCMGIS_CARTO_API_KEY_SETTING, "") or "").strip()
+
+
+def hcmgis_carto_api_key_set(key):
+    QSettings().setValue(HCMGIS_CARTO_API_KEY_SETTING, (key or "").strip())
+
+
+def hcmgis_is_carto_url(url):
+    return isinstance(url, str) and "basemaps.cartocdn.com" in url.lower()
+
+
+def hcmgis_carto_api_key_dialog(parent=None):
+    """Open the CARTO API key dialog (menu-driven). Returns the saved key, or '' if cancelled."""
+    key = hcmgis_carto_api_key_get()
+
+    if not isinstance(parent, QWidget):
+        try:
+            parent = qgis.utils.iface.mainWindow()
+        except Exception:
+            parent = None
+
+    dialog = QDialog(parent)
+    dialog.setWindowTitle("CARTO API Key")
+    dialog.setMinimumWidth(420)
+    layout = QVBoxLayout(dialog)
+
+    info = QLabel(
+        "CARTO basemaps require a free API key.<br>"
+        'Request one at <a href="%s">%s</a>, then paste it below.'
+        % (HCMGIS_CARTO_API_KEY_URL, HCMGIS_CARTO_API_KEY_URL)
+    )
+    info.setOpenExternalLinks(True)
+    info.setWordWrap(True)
+    layout.addWidget(info)
+
+    key_edit = QLineEdit(key)
+    key_edit.setPlaceholderText("Paste your CARTO API key here")
+    layout.addWidget(key_edit)
+
+    buttons = QDialogButtonBox(
+        QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel
+    )
+    get_key_btn = buttons.addButton(
+        "Get free key", QDialogButtonBox.ButtonRole.ActionRole
+    )
+    get_key_btn.clicked.connect(
+        lambda: QDesktopServices.openUrl(QUrl(HCMGIS_CARTO_API_KEY_URL))
+    )
+    buttons.accepted.connect(dialog.accept)
+    buttons.rejected.connect(dialog.reject)
+    layout.addWidget(buttons)
+
+    if dialog.exec() != QDialog.DialogCode.Accepted:
+        return key
+
+    key = key_edit.text().strip()
+    hcmgis_carto_api_key_set(key)
+    return key
+
+
+def hcmgis_apply_carto_api_key(url):
+    """Append ?key=... to CARTO tile URLs when a key is saved; otherwise leave URL unchanged."""
+    if not hcmgis_is_carto_url(url):
+        return url
+
+    key = hcmgis_carto_api_key_get()
+    if not key:
+        return url
+
+    # Avoid duplicating an existing key parameter
+    if "key=" in url.lower():
+        return url
+    sep = "&" if "?" in url else "?"
+    return "%s%skey=%s" % (url, sep, key)
+
 
 def hcmgis_basemap_load():
     sources = []
     for basemap_name in basemap_names:
         idx = basemap_names.index(basemap_name)
-        basemap_uri = basemap_urls[idx]
+        basemap_uri = hcmgis_apply_carto_api_key(basemap_urls[idx])
         sources.append(
             ["connections-xyz", basemap_name, "", "", "", basemap_uri, "", "22", "0"]
         )
@@ -806,9 +886,9 @@ def hcmgis_basemap_load():
 
 def hcmgis_basemap(basemap_name):
     idx = basemap_names.index(basemap_name)
-    basemap_url = basemap_urls[idx]
+    basemap_url = hcmgis_apply_carto_api_key(basemap_urls[idx])
     basemap_uri = "type=xyz&url=" + basemap_url
-    if basemap_name.startswith("Google"):
+    if basemap_name.startswith("Google") or hcmgis_is_carto_url(basemap_url):
         basemap_uri = "type=xyz&url=" + requests.utils.quote(basemap_url).replace(
             "%3A", ":", 1
         )
@@ -868,7 +948,9 @@ def hcmgis_vectortiles_basemap(vectortiles_basemap_name):
 
     elif vectortiles_basemap_name.startswith("Carto"):
         # vectortiles_basemap_url = 'https://tiles.merginmaps.com/data/default/{z}/{x}/{y}.pbf'
-        vectortiles_basemap_url = "https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt"
+        vectortiles_basemap_url = hcmgis_apply_carto_api_key(
+            "https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt"
+        )
 
     elif vectortiles_basemap_name.startswith("Versatiles"):
         vectortiles_basemap_url = "https://tiles.versatiles.org/tiles/osm/{z}/{x}/{y}"

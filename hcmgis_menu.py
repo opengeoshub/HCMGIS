@@ -375,6 +375,15 @@ class hcmgis_menu:
         )
         self.basemap_menu.addAction(self.cartovoyager_action)
 
+        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_carto.png")
+        self.carto_api_key_action = QAction(
+            icon, "Set CARTO API Key...", self.iface.mainWindow()
+        )
+        self.carto_api_key_action.triggered.connect(
+            lambda checked=False: hcmgis_carto_api_key_dialog()
+        )
+        self.basemap_menu.addAction(self.carto_api_key_action)
+
         self.basemap_menu.addSeparator()
         #########################
         # ESRI https://gitlab.com/GIS-projects/Belgium-XYZ-tiles/tree/b538df2c2de0d16937641742f25e4709ca94e42e
