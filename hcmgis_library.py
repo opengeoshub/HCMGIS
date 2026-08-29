@@ -718,7 +718,7 @@ basemap_names = [
     "Vietbando Maps",
     # 'BecaGIS Maps',
     "HCMC OneMap",
-    "Vgrid",
+    "Vgrid Tilecode",
 ]
 basemap_urls = [
     "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
@@ -907,7 +907,7 @@ def hcmgis_basemap(basemap_name):
         basemap_uri = "type=xyz&url=" + requests.utils.quote(basemap_url).replace(
             "%3A", ":", 1
         )
-    elif basemap_name == "Vgrid":
+    elif basemap_name == "Vgrid Tilecode":
         basemap_uri += "&zmax=24"
     # basemap_uri = "type=xyz&url="+basemap_url
     # print (basemap_uri)
@@ -956,10 +956,10 @@ def hcmgis_basemap(basemap_name):
 def hcmgis_vectortiles_basemap(vectortiles_basemap_name):
     idx = vectortiles_basemap_names.index(vectortiles_basemap_name)
     style_url = vectortiles_style_urls[idx]
-    if vectortiles_basemap_name.startswith("ESRI"):
-        vectortiles_basemap_url = "https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}.pbf"
     if vectortiles_basemap_name.startswith("ESRI OSM"):
         vectortiles_basemap_url = "https://basemaps.arcgis.com/arcgis/rest/services/OpenStreetMap_v2/VectorTileServer/tile/{z}/{y}/{x}.pbf"
+    elif vectortiles_basemap_name.startswith("ESRI"):
+        vectortiles_basemap_url = "https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer/tile/{z}/{y}/{x}.pbf"
 
     elif vectortiles_basemap_name.startswith("Carto"):
         # vectortiles_basemap_url = 'https://tiles.merginmaps.com/data/default/{z}/{x}/{y}.pbf'

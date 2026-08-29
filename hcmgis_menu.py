@@ -44,13 +44,6 @@ class hcmgis_menu:
         else:
             self.iface.addPluginToMenu("&hcmgis", submenu.menuAction())
 
-    def hcmgis_add_submenu3(self, submenu, icon):
-        if self.basemap_menu != None:
-            submenu.setIcon(QIcon(icon))
-            self.basemap_menu.addMenu(submenu)
-        else:
-            self.iface.addPluginToMenu("&basemap", submenu.menuAction())
-
     def initGui(self):
         # Uncomment the following two lines to have hcmgis accessible from a top-level menu
         self.hcmgis_menu = QMenu(QCoreApplication.translate("hcmgis", "HCMGIS"))
@@ -58,132 +51,42 @@ class hcmgis_menu:
             self.iface.firstRightStandardMenu().menuAction(), self.hcmgis_menu
         )
 
-        # OpenData_basemap submenu
-        self.basemap_menu = QMenu("Basemaps")
+        # Raster basemap submenu
+        self.basemap_menu = QMenu("Raster Basemaps")
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_basemap.svg")
         self.hcmgis_add_submenu2(self.basemap_menu, icon)
 
         ############################################
         # Add Vector Tile Basemaps
         ############################################
-        # Adding "Vector tiles" submenu under "Basemaps"
-        self.vectortiles_menu = QMenu("Vector tiles")
-        # icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vectortiles.png")
+        self.vectortiles_menu = QMenu("Vector Basemaps")
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vectortiles.png")
-        self.hcmgis_add_submenu3(self.vectortiles_menu, icon)
+        self.hcmgis_add_submenu2(self.vectortiles_menu, icon)
 
         ############################################
         # ESRI Vector Tiles
         ############################################
-
-        # ESRI Colored Pencil action under "Vector tiles" submenu
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esricoloredpencile_action = QAction(
-            icon, "ESRI Colored Pencil", self.iface.mainWindow()
-        )
-        self.esricoloredpencile_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI Colored Pencil")
-        )
-        self.vectortiles_menu.addAction(self.esricoloredpencile_action)
-
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esridark_action = QAction(icon, "ESRI Dark", self.iface.mainWindow())
-        self.esridark_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI Dark")
-        )
-        self.vectortiles_menu.addAction(self.esridark_action)
-
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esrimodenantique_action = QAction(
-            icon, "ESRI Modern Antique", self.iface.mainWindow()
-        )
-        self.esrimodenantique_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI Modern Antique")
-        )
-        self.vectortiles_menu.addAction(self.esrimodenantique_action)
-
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esrinova_action = QAction(icon, "ESRI Nova", self.iface.mainWindow())
-        self.esrinova_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI Nova")
-        )
-        self.vectortiles_menu.addAction(self.esrinova_action)
-
-        # ESRI Night
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esrinight_action = QAction(icon, "ESRI Night", self.iface.mainWindow())
-        self.esrinight_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI Night")
-        )
-        self.vectortiles_menu.addAction(self.esrinight_action)
-
-        # ESRI Topo
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esritopo_action = QAction(icon, "ESRI Topo", self.iface.mainWindow())
-        self.esritopo_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI Topo")
-        )
-        self.vectortiles_menu.addAction(self.esritopo_action)
-
-        # ESRI Charted Territory
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esrichartedterritory_action = QAction(
-            icon, "ESRI Charted Territory", self.iface.mainWindow()
-        )
-        self.esrichartedterritory_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI Charted Territory")
-        )
-        self.vectortiles_menu.addAction(self.esrichartedterritory_action)
-
-        # ESRI OSM Standard
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esriosmstandard_action = QAction(
-            icon, "ESRI OSM Standard", self.iface.mainWindow()
-        )
-        self.esriosmstandard_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI OSM Standard")
-        )
-        self.vectortiles_menu.addAction(self.esriosmstandard_action)
-
-        # ESRI OSM Street
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esriosmstreet_action = QAction(
-            icon, "ESRI OSM Street", self.iface.mainWindow()
-        )
-        self.esriosmstreet_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI OSM Street")
-        )
-        self.vectortiles_menu.addAction(self.esriosmstreet_action)
-
-        # ESRI OSM Light Grey
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esriosmlightgrey_action = QAction(
-            icon, "ESRI OSM Light Grey", self.iface.mainWindow()
-        )
-        self.esriosmlightgrey_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI OSM Light Grey")
-        )
-        self.vectortiles_menu.addAction(self.esriosmlightgrey_action)
-
-        # ESRI OSM Dark Grey
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esriosmdarkgrey_action = QAction(
-            icon, "ESRI OSM Dark Grey", self.iface.mainWindow()
-        )
-        self.esriosmdarkgrey_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI OSM Dark Grey")
-        )
-        self.vectortiles_menu.addAction(self.esriosmdarkgrey_action)
-
-        # ESRI OSM Dark Grey
-        icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_esri.png")
-        self.esriosmdarkgrey_action = QAction(
-            icon, "ESRI OSM Blueprint", self.iface.mainWindow()
-        )
-        self.esriosmdarkgrey_action.triggered.connect(
-            lambda: hcmgis_vectortiles_basemap("ESRI OSM Blueprint")
-        )
-        self.vectortiles_menu.addAction(self.esriosmdarkgrey_action)
+        esri_vectortiles = [
+            "ESRI Colored Pencil",
+            "ESRI Dark",
+            "ESRI Modern Antique",
+            "ESRI Nova",
+            "ESRI Night",
+            "ESRI Topo",
+            "ESRI Charted Territory",
+            "ESRI OSM Standard",
+            "ESRI OSM Street",
+            "ESRI OSM Light Grey",
+            "ESRI OSM Dark Grey",
+            "ESRI OSM Blueprint",
+        ]
+        for esri_name in esri_vectortiles:
+            action = QAction(icon, esri_name, self.iface.mainWindow())
+            action.triggered.connect(
+                lambda checked=False, name=esri_name: hcmgis_vectortiles_basemap(name)
+            )
+            self.vectortiles_menu.addAction(action)
 
         self.vectortiles_menu.addSeparator()
         ############################################
@@ -623,8 +526,8 @@ class hcmgis_menu:
         # F4map - 2D
         #############################
         icon = QIcon(os.path.dirname(__file__) + "/icons/hcmgis_vgrid.svg")
-        self.f4map_action = QAction(icon, "Vgrid", self.iface.mainWindow())
-        self.f4map_action.triggered.connect(lambda: hcmgis_basemap("Vgrid"))
+        self.f4map_action = QAction(icon, "Vgrid Tilecode", self.iface.mainWindow())
+        self.f4map_action.triggered.connect(lambda: hcmgis_basemap("Vgrid Tilecode"))
         self.basemap_menu.addAction(self.f4map_action)
 
         # TXT to CSV
@@ -829,6 +732,9 @@ class hcmgis_menu:
             )
         else:
             self.iface.removePluginMenu("&hcmgis", self.basemap_menu.menuAction())
+            self.iface.removePluginMenu(
+                "&hcmgis", self.vectortiles_menu.menuAction()
+            )
             self.iface.removePluginMenu(
                 "&hcmgis", self.batch_converter_menu.menuAction()
             )
